@@ -103,7 +103,26 @@ loop:
 ```
 arm-linux-gnueabihf-gcc -c leds.s -o leds.o
 ```
-- 将编译好的leds.o文件链接生成linux可执行文件 leds.elf
+- 将编译好的leds.o文件链接生成linux可执行文件 leds.elf,同时指定了链接起始地址。
 ```
 arm-linux-gnueabihf-ld -Ttext 0x87800000 leds.o -o leds.elf
 ```
+
+- 通过copy命令指定elf生成bin文件，同时通过-S去掉了所有的称号表以及重写向信息,减少二进制文件的大小
+```
+arm-linux-gnueabihf-copyobj -O binary -S leds.elf leds.bin
+```
+
+-将leds.bin烧写到SDK(/dev/sdb)目录中，在烧写前imxdownload工具会在bin文件前面添加一些必要的头信息(IVT+DCD+Boot Data)生成leds.imx文件，最终烧写到SD卡中的是leds.imx文件。头文件信息中IVT数据记录了在链接生成elf时指定的链接地址(0x87800000)(代码段第一条指令的地址,也祼机运行代码时第一条指令的地址)。
+```
+imxdownload leds.bin /dev/sdb
+```
+
+<font color=#666666 size=2>
+I.MX6ULL boot rom(固定在SOC上的程序启动器)选择从SD卡启动后会将解析,会从1KB的位置开始读取bin的头文件信息(IVT+DCD+BOOT DATA)，并做一些初始化的操作，如初始化DDR3。leds.elf指定了链接地址是0x87800000,这个地址记录在了IVT中的entry中，当boot rom启动后会将bin文件具体的代码段加载到DDR3中的0x87800000地址，并在初始化完之后从DDR3的0x87800000地址开始执行程序。
+</font>
+<br/><br/>
+### 启动验证LED
+
+- 将I.MX6ULL开发板的启动开关设置成1与7打开，其它关闭，表示从SD卡启动。
+- 接通电源，此时电源LED亮绿灯，按下RESET按钮后几秒LED0红灯亮
