@@ -98,3 +98,12 @@ loop:
 ```
 
 ### 在Linux下编译
+
+- 编译leds.s,生成leds.o文件
+```
+arm-linux-gnueabihf-gcc -c leds.s -o leds.o
+```
+- 将编译好的leds.o文件链接生成linux可执行文件 leds.elf
+```
+arm-linux-gnueabihf-ld -Ttext 0x87800000 leds.o -o leds.elf
+```
