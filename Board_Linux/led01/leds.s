@@ -38,7 +38,7 @@ _start:
      str r1, [r0]
     /* 配置GPIO1_IO03 的管脚数据为低电平 */
      ldr r0, =0x0209C000
-     ldr r1, =0
+     ldr r1, =0x0
      str r1, [r0]
 loop:
     b loop
