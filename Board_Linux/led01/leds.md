@@ -29,7 +29,7 @@
 <font color=#666666 size=2>
 1.找到32章, IOMUX COntrol(IO复用)<br/>
 2.通过配置寄存器IOMUXC_SW_MUX_CTL_PAD_GPIO1_IO03复用为GPIO_03,即将MUX_MODE(04 - 00设置为0101)<br/>
-<img src="https://tva1.sinaimg.cn/large/008vxvgGly1h7u2puen2oj312x0u0n4l.jpg">
+<img src="https://tva1.1.cn/large/008vxvgGly1h7u2puen2oj312x0u0n4l.jpg">
 </font>
 
 #### 配置GPIO01_03管脚的电气属性(压摆率、速度、驱动能力、等，也就是配置管脚具体的使用场景，需要根据负载的特性来配置)
