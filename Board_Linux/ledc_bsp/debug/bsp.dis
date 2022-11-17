@@ -10,7 +10,7 @@ Disassembly of section .text:
 87800008:	e3800013 	orr	r0, r0, #19, 0
 8780000c:	e129f000 	msr	CPSR_fc, r0
 87800010:	e51fd000 	ldr	sp, [pc, #-0]	; 87800018 <_start+0x18>
-87800014:	ea000021 	b	878000a0 <main>
+87800014:	ea00003b 	b	87800108 <main>
 87800018:	80200000 	eorhi	r0, r0, r0
 8780001c:	00002441 	andeq	r2, r0, r1, asr #8
 87800020:	61656100 	cmnvs	r5, r0, lsl #2
@@ -23,80 +23,80 @@ Disassembly of section .text:
 8780003c:	44012a02 	strmi	r2, [r1], #-2562	; 0xfffff5fe
 87800040:	00000001 	andeq	r0, r0, r1
 
-87800044 <delay_ms>:
-87800044:	e24dd008 	sub	sp, sp, #8, 0
-87800048:	e58d0004 	str	r0, [sp, #4]
-8780004c:	e59d3004 	ldr	r3, [sp, #4]
-87800050:	e3530000 	cmp	r3, #0, 0
-87800054:	e2433001 	sub	r3, r3, #1, 0
-87800058:	e58d3004 	str	r3, [sp, #4]
-8780005c:	1afffffa 	bne	8780004c <delay_ms+0x8>
-87800060:	e28dd008 	add	sp, sp, #8, 0
-87800064:	e12fff1e 	bx	lr
+87800044 <Clk_Init>:
+87800044:	e3a03901 	mov	r3, #16384	; 0x4000
+87800048:	e3e02000 	mvn	r2, #0, 0
+8780004c:	e340320c 	movt	r3, #524	; 0x20c
+87800050:	e583206c 	str	r2, [r3, #108]	; 0x6c
+87800054:	e12fff1e 	bx	lr
 
-87800068 <delay>:
-87800068:	e24dd008 	sub	sp, sp, #8, 0
-8780006c:	e58d0004 	str	r0, [sp, #4]
-87800070:	e59d3004 	ldr	r3, [sp, #4]
-87800074:	e3530000 	cmp	r3, #0, 0
-87800078:	e2433001 	sub	r3, r3, #1, 0
-8780007c:	e58d3004 	str	r3, [sp, #4]
-87800080:	0a000004 	beq	87800098 <delay+0x30>
-87800084:	e30027ff 	movw	r2, #2047	; 0x7ff
-87800088:	e3520000 	cmp	r2, #0, 0
-8780008c:	e2422001 	sub	r2, r2, #1, 0
-87800090:	1afffffc 	bne	87800088 <delay+0x20>
-87800094:	eafffff5 	b	87800070 <delay+0x8>
-87800098:	e28dd008 	add	sp, sp, #8, 0
-8780009c:	e12fff1e 	bx	lr
+87800058 <Led_Init>:
+87800058:	e3a03000 	mov	r3, #0, 0
+8780005c:	e3a02903 	mov	r2, #49152	; 0xc000
+87800060:	e340320e 	movt	r3, #526	; 0x20e
+87800064:	e3a0c005 	mov	ip, #5, 0
+87800068:	e30100b0 	movw	r0, #4272	; 0x10b0
+8780006c:	e3402209 	movt	r2, #521	; 0x209
+87800070:	e3a01008 	mov	r1, #8, 0
+87800074:	e583c068 	str	ip, [r3, #104]	; 0x68
+87800078:	e58302f4 	str	r0, [r3, #756]	; 0x2f4
+8780007c:	e5821004 	str	r1, [r2, #4]
+87800080:	e12fff1e 	bx	lr
+
+87800084 <Led_On>:
+87800084:	e3a03903 	mov	r3, #49152	; 0xc000
+87800088:	e3a02000 	mov	r2, #0, 0
+8780008c:	e3403209 	movt	r3, #521	; 0x209
+87800090:	e5832000 	str	r2, [r3]
+87800094:	e12fff1e 	bx	lr
+
+87800098 <Led_Off>:
+87800098:	e3a03903 	mov	r3, #49152	; 0xc000
+8780009c:	e3a02008 	mov	r2, #8, 0
+878000a0:	e3403209 	movt	r3, #521	; 0x209
+878000a4:	e5832000 	str	r2, [r3]
+878000a8:	e12fff1e 	bx	lr
+
+878000ac <delay_ms>:
+878000ac:	e24dd008 	sub	sp, sp, #8, 0
+878000b0:	e58d0004 	str	r0, [sp, #4]
+878000b4:	e59d3004 	ldr	r3, [sp, #4]
+878000b8:	e3530000 	cmp	r3, #0, 0
+878000bc:	e2433001 	sub	r3, r3, #1, 0
+878000c0:	e58d3004 	str	r3, [sp, #4]
+878000c4:	1afffffa 	bne	878000b4 <delay_ms+0x8>
+878000c8:	e28dd008 	add	sp, sp, #8, 0
+878000cc:	e12fff1e 	bx	lr
+
+878000d0 <Delay>:
+878000d0:	e24dd008 	sub	sp, sp, #8, 0
+878000d4:	e58d0004 	str	r0, [sp, #4]
+878000d8:	e59d3004 	ldr	r3, [sp, #4]
+878000dc:	e3530000 	cmp	r3, #0, 0
+878000e0:	e2433001 	sub	r3, r3, #1, 0
+878000e4:	e58d3004 	str	r3, [sp, #4]
+878000e8:	0a000004 	beq	87800100 <Delay+0x30>
+878000ec:	e30027ff 	movw	r2, #2047	; 0x7ff
+878000f0:	e3520000 	cmp	r2, #0, 0
+878000f4:	e2422001 	sub	r2, r2, #1, 0
+878000f8:	1afffffc 	bne	878000f0 <Delay+0x20>
+878000fc:	eafffff5 	b	878000d8 <Delay+0x8>
+87800100:	e28dd008 	add	sp, sp, #8, 0
+87800104:	e12fff1e 	bx	lr
 
 Disassembly of section .text.startup:
 
-878000a0 <main>:
-878000a0:	e3a03903 	mov	r3, #49152	; 0xc000
-878000a4:	e3a0c901 	mov	ip, #16384	; 0x4000
-878000a8:	e52de004 	push	{lr}		; (str lr, [sp, #-4]!)
-878000ac:	e3a01008 	mov	r1, #8, 0
-878000b0:	e3403209 	movt	r3, #521	; 0x209
-878000b4:	e340c20c 	movt	ip, #524	; 0x20c
-878000b8:	e3e0e000 	mvn	lr, #0, 0
-878000bc:	e3a02000 	mov	r2, #0, 0
-878000c0:	e58ce06c 	str	lr, [ip, #108]	; 0x6c
-878000c4:	e340220e 	movt	r2, #526	; 0x20e
-878000c8:	e3a0e005 	mov	lr, #5, 0
-878000cc:	e1a00003 	mov	r0, r3
-878000d0:	e1a0c001 	mov	ip, r1
-878000d4:	e582e068 	str	lr, [r2, #104]	; 0x68
-878000d8:	e301e0b0 	movw	lr, #4272	; 0x10b0
-878000dc:	e582e2f4 	str	lr, [r2, #756]	; 0x2f4
-878000e0:	e5831004 	str	r1, [r3, #4]
-878000e4:	e3a01f7d 	mov	r1, #500	; 0x1f4
-878000e8:	e1a03001 	mov	r3, r1
-878000ec:	e2411001 	sub	r1, r1, #1, 0
-878000f0:	e3530000 	cmp	r3, #0, 0
-878000f4:	0a000007 	beq	87800118 <main+0x78>
-878000f8:	e30027ff 	movw	r2, #2047	; 0x7ff
-878000fc:	e3520000 	cmp	r2, #0, 0
-87800100:	e2422001 	sub	r2, r2, #1, 0
-87800104:	1afffffc 	bne	878000fc <main+0x5c>
-87800108:	e1a03001 	mov	r3, r1
-8780010c:	e2411001 	sub	r1, r1, #1, 0
-87800110:	e3530000 	cmp	r3, #0, 0
-87800114:	1afffff7 	bne	878000f8 <main+0x58>
-87800118:	e3a01f7d 	mov	r1, #500	; 0x1f4
-8780011c:	e5803000 	str	r3, [r0]
-87800120:	e3510000 	cmp	r1, #0, 0
-87800124:	e2411001 	sub	r1, r1, #1, 0
-87800128:	0a000006 	beq	87800148 <main+0xa8>
-8780012c:	e30027ff 	movw	r2, #2047	; 0x7ff
-87800130:	e3520000 	cmp	r2, #0, 0
-87800134:	e2422001 	sub	r2, r2, #1, 0
-87800138:	1afffffc 	bne	87800130 <main+0x90>
-8780013c:	e3510000 	cmp	r1, #0, 0
-87800140:	e2411001 	sub	r1, r1, #1, 0
-87800144:	1afffff8 	bne	8780012c <main+0x8c>
-87800148:	e580c000 	str	ip, [r0]
-8780014c:	eaffffe4 	b	878000e4 <main+0x44>
+87800108 <main>:
+87800108:	e92d4010 	push	{r4, lr}
+8780010c:	ebffffcc 	bl	87800044 <Clk_Init>
+87800110:	ebffffd0 	bl	87800058 <Led_Init>
+87800114:	e3a00f7d 	mov	r0, #500	; 0x1f4
+87800118:	ebffffec 	bl	878000d0 <Delay>
+8780011c:	ebffffd8 	bl	87800084 <Led_On>
+87800120:	e3a00f7d 	mov	r0, #500	; 0x1f4
+87800124:	ebffffe9 	bl	878000d0 <Delay>
+87800128:	ebffffda 	bl	87800098 <Led_Off>
+8780012c:	eafffff8 	b	87800114 <main+0xc>
 
 Disassembly of section .comment:
 
