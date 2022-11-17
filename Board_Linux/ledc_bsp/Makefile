@@ -13,11 +13,13 @@ DUMP			:= $(COMPILER)objdump
 INCLUDE_DIRS 	:= 	common \
 					drivers/clk \
 					drivers/led \
+					drivers/gpio \
 					libs/delay
 #源文件目录
 SRC_DIRS 		:= 	src \
 					drivers/clk \
 					drivers/led \
+					drivers/gpio \
 					libs/delay
 
 #INCLUDE_DIRS中所有的目录添加-I 前续,用于编译时增加链接头文件目录

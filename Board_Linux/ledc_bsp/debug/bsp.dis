@@ -10,7 +10,7 @@ Disassembly of section .text:
 87800008:	e3800013 	orr	r0, r0, #19, 0
 8780000c:	e129f000 	msr	CPSR_fc, r0
 87800010:	e51fd000 	ldr	sp, [pc, #-0]	; 87800018 <_start+0x18>
-87800014:	ea00003e 	b	87800114 <main>
+87800014:	ea000067 	b	878001b8 <main>
 87800018:	80200000 	eorhi	r0, r0, r0
 8780001c:	00002441 	andeq	r2, r0, r1, asr #8
 87800020:	61656100 	cmnvs	r5, r0, lsl #2
@@ -31,75 +31,122 @@ Disassembly of section .text:
 87800054:	e12fff1e 	bx	lr
 
 87800058 <Led_Init>:
-87800058:	e3a02000 	mov	r2, #0, 0
-8780005c:	e3a03903 	mov	r3, #49152	; 0xc000
-87800060:	e340220e 	movt	r2, #526	; 0x20e
-87800064:	e3403209 	movt	r3, #521	; 0x209
-87800068:	e3a00005 	mov	r0, #5, 0
-8780006c:	e30110b0 	movw	r1, #4272	; 0x10b0
-87800070:	e5820068 	str	r0, [r2, #104]	; 0x68
-87800074:	e58212f4 	str	r1, [r2, #756]	; 0x2f4
-87800078:	e5932004 	ldr	r2, [r3, #4]
-8780007c:	e3822008 	orr	r2, r2, #8, 0
-87800080:	e5832004 	str	r2, [r3, #4]
-87800084:	e12fff1e 	bx	lr
+87800058:	e3a03000 	mov	r3, #0, 0
+8780005c:	e24dd008 	sub	sp, sp, #8, 0
+87800060:	e340320e 	movt	r3, #526	; 0x20e
+87800064:	e3a0c005 	mov	ip, #5, 0
+87800068:	e30110b0 	movw	r1, #4272	; 0x10b0
+8780006c:	e583c068 	str	ip, [r3, #104]	; 0x68
+87800070:	e3a02000 	mov	r2, #0, 0
+87800074:	e58312f4 	str	r1, [r3, #756]	; 0x2f4
+87800078:	e3a00903 	mov	r0, #49152	; 0xc000
+8780007c:	e28d3008 	add	r3, sp, #8, 0
+87800080:	e58d2000 	str	r2, [sp]
+87800084:	e3400209 	movt	r0, #521	; 0x209
+87800088:	e5cd2004 	strb	r2, [sp, #4]
+8780008c:	e3a01003 	mov	r1, #3, 0
+87800090:	e913000c 	ldmdb	r3, {r2, r3}
+87800094:	e28dd008 	add	sp, sp, #8, 0
+87800098:	ea000009 	b	878000c4 <GPIO_Init>
 
-87800088 <Led_On>:
-87800088:	e3a03903 	mov	r3, #49152	; 0xc000
-8780008c:	e3403209 	movt	r3, #521	; 0x209
-87800090:	e5932000 	ldr	r2, [r3]
-87800094:	e3c22008 	bic	r2, r2, #8, 0
-87800098:	e5832000 	str	r2, [r3]
-8780009c:	e12fff1e 	bx	lr
+8780009c <Led_On>:
+8780009c:	e3a00903 	mov	r0, #49152	; 0xc000
+878000a0:	e3a02000 	mov	r2, #0, 0
+878000a4:	e3400209 	movt	r0, #521	; 0x209
+878000a8:	e3a01003 	mov	r1, #3, 0
+878000ac:	ea00001d 	b	87800128 <GPIO_SetValue>
 
-878000a0 <Led_Off>:
-878000a0:	e3a03903 	mov	r3, #49152	; 0xc000
-878000a4:	e3403209 	movt	r3, #521	; 0x209
-878000a8:	e5932000 	ldr	r2, [r3]
-878000ac:	e3822008 	orr	r2, r2, #8, 0
-878000b0:	e5832000 	str	r2, [r3]
-878000b4:	e12fff1e 	bx	lr
+878000b0 <Led_Off>:
+878000b0:	e3a00903 	mov	r0, #49152	; 0xc000
+878000b4:	e3a02001 	mov	r2, #1, 0
+878000b8:	e3400209 	movt	r0, #521	; 0x209
+878000bc:	e3a01003 	mov	r1, #3, 0
+878000c0:	ea000018 	b	87800128 <GPIO_SetValue>
 
-878000b8 <delay_ms>:
-878000b8:	e24dd008 	sub	sp, sp, #8, 0
-878000bc:	e58d0004 	str	r0, [sp, #4]
-878000c0:	e59d3004 	ldr	r3, [sp, #4]
-878000c4:	e3530000 	cmp	r3, #0, 0
-878000c8:	e2433001 	sub	r3, r3, #1, 0
-878000cc:	e58d3004 	str	r3, [sp, #4]
-878000d0:	1afffffa 	bne	878000c0 <delay_ms+0x8>
-878000d4:	e28dd008 	add	sp, sp, #8, 0
-878000d8:	e12fff1e 	bx	lr
-
-878000dc <Delay>:
-878000dc:	e24dd008 	sub	sp, sp, #8, 0
-878000e0:	e58d0004 	str	r0, [sp, #4]
-878000e4:	e59d3004 	ldr	r3, [sp, #4]
-878000e8:	e3530000 	cmp	r3, #0, 0
-878000ec:	e2433001 	sub	r3, r3, #1, 0
-878000f0:	e58d3004 	str	r3, [sp, #4]
-878000f4:	0a000004 	beq	8780010c <Delay+0x30>
-878000f8:	e30027ff 	movw	r2, #2047	; 0x7ff
-878000fc:	e3520000 	cmp	r2, #0, 0
-87800100:	e2422001 	sub	r2, r2, #1, 0
-87800104:	1afffffc 	bne	878000fc <Delay+0x20>
-87800108:	eafffff5 	b	878000e4 <Delay+0x8>
+878000c4 <GPIO_Init>:
+878000c4:	e24dd008 	sub	sp, sp, #8, 0
+878000c8:	e28dc008 	add	ip, sp, #8, 0
+878000cc:	e90c000c 	stmdb	ip, {r2, r3}
+878000d0:	e3a03001 	mov	r3, #1, 0
+878000d4:	e59d2000 	ldr	r2, [sp]
+878000d8:	e1a01113 	lsl	r1, r3, r1
+878000dc:	e3520000 	cmp	r2, #0, 0
+878000e0:	1a00000b 	bne	87800114 <GPIO_Init+0x50>
+878000e4:	e5dd2004 	ldrb	r2, [sp, #4]
+878000e8:	e1e03001 	mvn	r3, r1
+878000ec:	e5803004 	str	r3, [r0, #4]
+878000f0:	e3520000 	cmp	r2, #0, 0
+878000f4:	05902000 	ldreq	r2, [r0]
+878000f8:	15903000 	ldrne	r3, [r0]
+878000fc:	00033002 	andeq	r3, r3, r2
+87800100:	11811003 	orrne	r1, r1, r3
+87800104:	05803000 	streq	r3, [r0]
+87800108:	15801000 	strne	r1, [r0]
 8780010c:	e28dd008 	add	sp, sp, #8, 0
 87800110:	e12fff1e 	bx	lr
+87800114:	e5903004 	ldr	r3, [r0, #4]
+87800118:	e1811003 	orr	r1, r1, r3
+8780011c:	e5801004 	str	r1, [r0, #4]
+87800120:	e28dd008 	add	sp, sp, #8, 0
+87800124:	e12fff1e 	bx	lr
+
+87800128 <GPIO_SetValue>:
+87800128:	e3a03001 	mov	r3, #1, 0
+8780012c:	e3520000 	cmp	r2, #0, 0
+87800130:	e1a01113 	lsl	r1, r3, r1
+87800134:	e5903000 	ldr	r3, [r0]
+87800138:	01c33001 	biceq	r3, r3, r1
+8780013c:	11811003 	orrne	r1, r1, r3
+87800140:	05803000 	streq	r3, [r0]
+87800144:	15801000 	strne	r1, [r0]
+87800148:	e12fff1e 	bx	lr
+
+8780014c <GPIO_RedValue>:
+8780014c:	e5900000 	ldr	r0, [r0]
+87800150:	e1a00130 	lsr	r0, r0, r1
+87800154:	e2000001 	and	r0, r0, #1, 0
+87800158:	e12fff1e 	bx	lr
+
+8780015c <delay_ms>:
+8780015c:	e24dd008 	sub	sp, sp, #8, 0
+87800160:	e58d0004 	str	r0, [sp, #4]
+87800164:	e59d3004 	ldr	r3, [sp, #4]
+87800168:	e3530000 	cmp	r3, #0, 0
+8780016c:	e2433001 	sub	r3, r3, #1, 0
+87800170:	e58d3004 	str	r3, [sp, #4]
+87800174:	1afffffa 	bne	87800164 <delay_ms+0x8>
+87800178:	e28dd008 	add	sp, sp, #8, 0
+8780017c:	e12fff1e 	bx	lr
+
+87800180 <Delay>:
+87800180:	e24dd008 	sub	sp, sp, #8, 0
+87800184:	e58d0004 	str	r0, [sp, #4]
+87800188:	e59d3004 	ldr	r3, [sp, #4]
+8780018c:	e3530000 	cmp	r3, #0, 0
+87800190:	e2433001 	sub	r3, r3, #1, 0
+87800194:	e58d3004 	str	r3, [sp, #4]
+87800198:	0a000004 	beq	878001b0 <Delay+0x30>
+8780019c:	e30027ff 	movw	r2, #2047	; 0x7ff
+878001a0:	e3520000 	cmp	r2, #0, 0
+878001a4:	e2422001 	sub	r2, r2, #1, 0
+878001a8:	1afffffc 	bne	878001a0 <Delay+0x20>
+878001ac:	eafffff5 	b	87800188 <Delay+0x8>
+878001b0:	e28dd008 	add	sp, sp, #8, 0
+878001b4:	e12fff1e 	bx	lr
 
 Disassembly of section .text.startup:
 
-87800114 <main>:
-87800114:	e92d4010 	push	{r4, lr}
-87800118:	ebffffc9 	bl	87800044 <Clk_Init>
-8780011c:	ebffffcd 	bl	87800058 <Led_Init>
-87800120:	e3a00f7d 	mov	r0, #500	; 0x1f4
-87800124:	ebffffec 	bl	878000dc <Delay>
-87800128:	ebffffd6 	bl	87800088 <Led_On>
-8780012c:	e3a00f7d 	mov	r0, #500	; 0x1f4
-87800130:	ebffffe9 	bl	878000dc <Delay>
-87800134:	ebffffd9 	bl	878000a0 <Led_Off>
-87800138:	eafffff8 	b	87800120 <main+0xc>
+878001b8 <main>:
+878001b8:	e92d4010 	push	{r4, lr}
+878001bc:	ebffffa0 	bl	87800044 <Clk_Init>
+878001c0:	ebffffa4 	bl	87800058 <Led_Init>
+878001c4:	e3a00f7d 	mov	r0, #500	; 0x1f4
+878001c8:	ebffffec 	bl	87800180 <Delay>
+878001cc:	ebffffb2 	bl	8780009c <Led_On>
+878001d0:	e3a00f7d 	mov	r0, #500	; 0x1f4
+878001d4:	ebffffe9 	bl	87800180 <Delay>
+878001d8:	ebffffb4 	bl	878000b0 <Led_Off>
+878001dc:	eafffff8 	b	878001c4 <main+0xc>
 
 Disassembly of section .comment:
 
