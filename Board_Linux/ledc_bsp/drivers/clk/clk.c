@@ -1,6 +1,7 @@
-#define CCM_CCGR1 *((volatile unsigned int *)0x020C406C)
+
+#include "imx6ul.h"
 
 void Clk_Init()
 {
-    CCM_CCGR1 = 0xFFFFFFFF;
+    CCM->CCGR1 = 0xFFFFFFFF;
 }
