@@ -35,26 +35,36 @@ COBJS			:= $(patsubst %, obj/%, $(CFILE_NAMES:.c=.o))
 
 OBJS 			:= $(SOBJS) $(COBJS)
 
-#make在编译的时候会首先查找当前目录下是否有依赖的目标(.o)文件
-#make在编译的时候可以从VPATH中去搜索查找依赖的目标(.o)文件
+#配置可以搜索查找依赖文件的路径
 VPATH			:= $(SRC_DIRS) 
 
 #忽略同级目录中的clean(如果存在),clean只是Makefile中定义的执行命令
 .PHONY: clean
 
-$(TARGET).bin : $(OBJS)
-	$(LD) -Timx6ull.lds -o $(TARGET).elf $^
-	$(COPY) -O binary -S $(TARGET).elf $@ 
-	$(DUMP) -D -m arm $(TARGET).elf > $(TARGET).dis
+./product/$(TARGET).bin : $(OBJS)
+	$(LD) -Timx6ull.lds -o ./product/$(TARGET).elf $^
+	$(COPY) -O binary -S ./product/$(TARGET).elf $@ 
+	$(DUMP) -D -m arm ./product/$(TARGET).elf > ./debug/$(TARGET).dis
 
+#指定要生成的目标已经依赖的目标取值范围
+#obj/start.o只能在SOBJS中去寻找
 $(SOBJS) : obj/%.o : %.s
 	$(CC) -Wall -nostdlib -O2  $(INCLUDE) -c $< -o $@ 
 
 $(COBJS) : obj/%.o : %.c
 	$(CC) -Wall -nostdlib -O2  $(INCLUDE) -c $< -o $@ 
+
+
+install:
+	make clean
+	make
+	gcc -w ./tools/imxdownload.c -o ./tools/imxdownload
+
+write:
+	./tools/imxdownload ./product/$(TARGET).bin 
 	
 clean:
-	rm -rf $(TARGET).elf $(TARGET).dis $(TARGET).bin $(COBJS) $(SOBJS)
+	rm -rf ./product/* ./debug/* $(COBJS) $(SOBJS) ./tools/imxdownload
 
 print:
-	@echo $(VPATH)
+	@echo $(SOBJS)

@@ -1,5 +1,5 @@
 
-bsp.elf:     file format elf32-littlearm
+./product/bsp.elf:     file format elf32-littlearm
 
 
 Disassembly of section .text:
