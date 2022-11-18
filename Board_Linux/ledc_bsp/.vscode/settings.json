@@ -1,6 +1,7 @@
 {
   "files.associations": {
     "pod_push": "shellscript",
-    "imx6ul.h": "c"
-  }
+    "imx6ul.h": "c",
+    "beep.h": "c"
+}
 }
