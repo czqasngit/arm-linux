@@ -5,12 +5,12 @@ void GPIO_Init(GPIO_Type *base, int pin, GPIO_CONFIG config)
 {
     if (config.direction == GPIO_DIRECTION_INPUT)
     {
-        base->GDIR = ~(1 << pin);
-        GPIO_SetValue(base, pin, config.defaultOutputValue);
+        base->GDIR &= ~(1 << pin);
     }
     else
     {
         base->GDIR |= (1 << pin);
+        GPIO_SetValue(base, pin, config.defaultOutputValue);
     }
 }
 void GPIO_SetValue(GPIO_Type *base, int pin, uint8_t value)
