@@ -1,0 +1,10 @@
+{
+  "files.associations": {
+    "pod_push": "shellscript",
+    "imx6ul.h": "c",
+    "beep.h": "c",
+    "const.h": "c",
+    "delay.h": "c",
+    "gpio.h": "c"
+  }
+}
