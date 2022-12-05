@@ -13,12 +13,18 @@ int main(void)
     Key0_Init();
     while (1)
     {
-        Delay(500);
-        Led_On();
-        Beep_On();
-        Delay(500);
-        Led_Off();
-        Beep_Off();
+        Delay(10);
+        if (Key0_GetValue())
+        {
+
+            Led_On();
+            Beep_On();
+        }
+        else
+        {
+            Led_Off();
+            Beep_Off();
+        }
     }
 
     return 0;
