@@ -11,9 +11,12 @@ int main(void)
     Led_Init();
     Beep_Init();
     Key0_Init();
+    
+    int pressed = 0;
     while (1)
     {
         Delay(10);
+
         if (Key0_GetValue())
         {
 

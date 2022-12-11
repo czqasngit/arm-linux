@@ -21,7 +21,7 @@ int Key0_GetValue()
         //此时的电平是低电平,表示按钮是接下状态
         //为了防止电平抖动,延迟10ms再读取一下电平状态,如果还是按下表示按钮按下并且稳定
         Delay(10);
-        if (GPIO_RedValue(GPIO1, 18))
+        if (GPIO_RedValue(GPIO1, 18) == 0)
         {
             return 1;
         }
