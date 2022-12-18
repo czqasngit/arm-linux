@@ -6,6 +6,7 @@
 
 int main(void)
 {
+    Clk_Freq_Init();
     Clk_Init();
     Led_Init();
     Beep_Init();
