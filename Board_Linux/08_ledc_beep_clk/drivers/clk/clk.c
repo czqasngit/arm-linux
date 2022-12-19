@@ -28,4 +28,26 @@ void Clk_Freq_Init()
     CCM->CCSR &= ~(1 << 2);
     /// 分频器配置为1
     CCM->CACRR = 0;
+
+    /// 配置PPL2(528MHz)的PFD0 ~ FPD3
+    int reg = CCM_ANALOG->PFD_528;
+    /// PFD0: 352MHz
+    reg |= (27 << 0);
+    /// PFD1: 594MHz
+    reg |= (16 << 8);
+    /// PFD2: 396MHz
+    reg |= (24 << 16);
+    /// PFD3: 297MHz
+    reg |= (32 << 24);
+    CCM_ANALOG->PFD_528 = reg;
+    /// 配置PPL3(480MHz)的PFD0 ~ FPD3
+    reg = CCM_ANALOG->PFD_480;
+    /// PFD0: 720MHz
+    reg |= (12 << 0);
+    /// PFD1: 540MHz
+    reg |= (16 << 8);
+    /// PFD2: 508.2MHz
+    reg |= (17 << 16);
+    // PFD3: 454.7MHz
+    reg |= (19 << 24);
 }
