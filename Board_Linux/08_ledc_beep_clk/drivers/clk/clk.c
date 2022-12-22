@@ -24,10 +24,10 @@ void Clk_Freq_Init()
     /// bit 13: enable register
     /// 配置(696MHz)
     CCM_ANALOG->PLL_ARM = (1 << 13) | (58);
-    /// 将时钟源切换回CCSR的第二位判断是否选择的是pll1_main_clk
-    CCM->CCSR &= ~(1 << 2);
     /// 分频器配置为1
     CCM->CACRR = 0;
+    /// 将时钟源切换回CCSR的第二位判断是否选择的是pll1_main_clk
+    CCM->CCSR &= ~(1 << 2);
 
     /// 配置PPL2(528MHz)的PFD0 ~ FPD3
     int reg = CCM_ANALOG->PFD_528;
@@ -50,4 +50,5 @@ void Clk_Freq_Init()
     reg |= (17 << 16);
     // PFD3: 454.7MHz
     reg |= (19 << 24);
+    CCM_ANALOG->PFD_480 = reg;
 }
