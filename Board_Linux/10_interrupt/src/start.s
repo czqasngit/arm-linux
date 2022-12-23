@@ -18,6 +18,8 @@ _start:
     ldr pc, =FIQ_Handler                            /* 0x1c: 快速中断 */
 
 Reset_Handler:
+    cpsid i                             /* 关闭IRQ,  此时IRQ还没有配置完成，所以关闭*/
+
     /* 
         在设备上电启动时,执行的代码访问的外设都是实际地址,
         mmu与cache此时的意义不大,
@@ -42,7 +44,6 @@ Reset_Handler:
     dsb                                 /* 这里涉及到了改变读取内存的地址起始地址,需要使用内存屏障指令进隔断,保证前后读取指令都是正常的地址 */
     isb                                 /* 这里涉及到了改变读取内存的地址起始地址,需要使用内存屏障指令进隔断,保证前后读取指令都是正常的地址 */
 
-
     /* 设置不同模式下的sp指针,每一个模式的sp对应不同的物理地址,当进入不同工作模式时C语言会在不同的物理sp指针指向的栈内存上工作 */
     /* 进入IRQ模式 */
 	mrs r0, cpsr
@@ -65,7 +66,7 @@ Reset_Handler:
 	msr cpsr, r0		                /* 将r0 的数据写入到cpsr_c中 					*/
     ldr sp, =0x80200000                 /* 设置栈指针			 */
 
-
+    cpsie i                             /* 打开IRQ */
 	b main				                /* 跳转到C语言main函数 		 */
 
 Undefine_Instruction_Handler:
