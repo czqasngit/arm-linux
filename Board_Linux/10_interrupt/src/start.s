@@ -109,7 +109,7 @@ IRQ_Handler:
         中断发生时, IRQ模式下的lr(LR_svc物理)寄存器保存中断时刻的PC寄存器
         通过使用push命令将lr的值压入栈,这样的目的是为了在执行完当前中断服务函数
         后可以顺利的返回到中断前的执行位置,因为在执行中断服务函数的时候lr里面的值可能发生变化
-        比如: 在内部使用了blx调用其它函数
+        比如: 在内部使用了blx调用其它函数,新的IRQ中断进入
     */
     push {lr}    
     /*
@@ -127,6 +127,54 @@ IRQ_Handler:
     mrs r0, spsr        
     push {r0}
 
+    /* GIC寄存器组的基地址(起始地址,通过起始地址可以访问得所有的GIC寄存器) */
+    /* 将GIC基地址读取到r1寄存器中 */
+    MRC p15, 4, r1, c15, c0, 0; Read Configuration Base Address Register
+
+    /* 0x2000 - 0x3FFF 是GIC中CPU Interface的范围 */
+    /* 将r1中保存的GIC基地址偏移0x2000再保存到r1中 */
+    /* 此时r1中保存的是CPU Interface的基地址 */
+    add r1, r1, #0x2000
+    /*
+        r1(CPU Interface基地址)偏移0x0c得到GICC_IAR寄存器地址,
+        将GICC_IAR寄存器的值读取到r0中,
+        GICC_IAR保存了IRQ中断的中断号与CPU号(多核时使用),
+        通过中断号即可明确具体的中断来源并对中断进行响应
+     */
+    ldr r0, [r1, #0x0c]
+    /*
+        由于要进入到SVC模式了,需要将r0, r1两个通用寄存器的数据保存到栈里,
+        防止在SVC模式下后r0,r1数据丢失
+        此时r0, r1保存到的是IRQ模式下的栈空间,
+     */
+    push {r0, r1}
+    /*
+        将CPSR寄存器的M[4:0]值改成10011, 让CPU进入到SVC模式,
+        进行SVC模式之后,当我们处理当前中断时,
+        系统可以再次响应IRQ中断
+     */
+    cps #0x13; 进入到SVC
+    /*
+        进入到svc模式后先将lr的数据压入栈,执行完后再恢复
+        因为接下来要使用blx调用C语言函数,会改变lr寄存器的数据
+     */
+    push {lr}; 
+    ldr r2, =system_irqhandler; 将C语言写的中断服务函数的地址加载到r2寄存器
+    blx r2; 调用C语言的中断处理函数, r0为函数参数
+    pop {lr}; 调用完具体中断处理函数后,lr恢复
+    cps #0x12; 进入到IRQ,执行完中断服务函数后进入IRQ不能再次响应IRQ中断,直到当前的IRQ中断完成
+    pop {r0, r1};恢复IRQ模式下r0,r1寄存器的数据
+    /*
+        此时r0保存的是GICC_IAR寄存器的数据,
+        将GICC_IAR的数据写入到GICC_EOIR寄存器,表示当前IRQ中断处理完成
+     */
+    str r0, [r1, #0x10]
+
+    pop {r0}; 将栈顶的数据(此时栈顶保存的是spsr寄存器的值)出栈到r0寄存器
+    msr spsr_cxsf, r0; 恢复spsr寄存器数据
+    pop  {r0-r12}; 恢复r0-r12寄存器的数据
+    pop {lr}; 恢复lr寄存器的数据
+    subs pc, lr, #4; 将lr - 4字节赋值给lc, 恢复中断前的执行命令继续执行
 FIQ_Handler:
     ldr r0, =FIQ_Handler
     bx r0
