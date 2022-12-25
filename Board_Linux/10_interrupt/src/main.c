@@ -3,9 +3,12 @@
 #include "clk.h"
 #include "led.h"
 #include "beep.h"
+#include "interrupt.h"
 
 int main(void)
 {
+    /// 初始化中断服务函数
+    Init_Interrupt();
     Clk_Freq_Init();
     Clk_Init();
     Led_Init();

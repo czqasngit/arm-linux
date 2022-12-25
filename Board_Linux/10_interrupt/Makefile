@@ -1,5 +1,5 @@
 # 编译器前缀
-COMPILER 		:= arm-linux-gnueabihf-
+COMPILER 		:= arm-unknown-linux-gnueabihf-
 # 目录产物名称
 TARGET 			:= interrupt
 
@@ -15,6 +15,7 @@ INCLUDE_DIRS 	:= 	common \
 					drivers/led \
 					drivers/gpio \
 					drivers/beep \
+					drivers/interrupt \
 					libs/delay
 #源文件目录
 SRC_DIRS 		:= 	src \
@@ -22,6 +23,7 @@ SRC_DIRS 		:= 	src \
 					drivers/led \
 					drivers/gpio \
 					drivers/beep \
+					drivers/interrupt \
 					libs/delay
 
 #INCLUDE_DIRS中所有的目录添加-I 前续,用于编译时增加链接头文件目录

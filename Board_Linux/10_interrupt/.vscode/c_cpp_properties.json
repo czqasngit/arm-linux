@@ -1,9 +1,12 @@
 {
-  "configurations": [
-    {
-      "includePath": ["${workspaceFolder}/**", "${workspaceFolder}/*/**"],
-      "configurationProvider": "ms-vscode.makefile-tools"
-    }
-  ],
-  "version": 4
+    "configurations": [
+        {
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/*/**",
+            ],
+            "configurationProvider": "ms-vscode.makefile-tools"
+        }
+    ],
+    "version": 4
 }
