@@ -69,7 +69,7 @@ install:
 	gcc -w ./tools/imxdownload.c -o ./tools/imxdownload
 
 write:
-	./tools/imxdownload ./product/$(TARGET).bin 
+	./tools/imxdownload ./product/$(TARGET).bin /dev/sdb
 	
 clean:
 	rm -rf ./product/* ./debug/* $(COBJS) $(SOBJS) ./tools/imxdownload
