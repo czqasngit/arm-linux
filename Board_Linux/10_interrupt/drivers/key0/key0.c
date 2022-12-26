@@ -26,23 +26,17 @@ void Key0_Init()
 
 void Key0_Interrupt_Irq_Handler(unsigned int gicciar, void *context)
 {
-    static int state = 0;
     /// 中断服务函数要求快进快出,这里没有定时器
     /// 为了处理抖动暂时使用Delay来解决
     /// 以后使用定时器来处理
     Delay(10);
     if (GPIO_ReadValue(GPIO1, 18) == 0)
     {
-        if (state == 0)
-        {
-            state = 1;
-        }
-        else
-        {
-            state = 0;
-        }
-        Beep_Set(state);
-        Led_Set(state);
+        Beep_On();
+        Led_On();
+        Delay(350);
+        Beep_Off();
+        Led_Off();
     }
     /// 中断处理完成后,清楚中断标志位
     GPIO_Clean_Interrupt_Flag(GPIO1, 18);
