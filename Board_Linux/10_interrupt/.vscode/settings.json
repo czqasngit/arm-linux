@@ -6,7 +6,8 @@
     "core_ca7.h": "c",
     "interrupt.h": "c",
     "fsl_common.h": "c",
-    "fsl_iomuxc.h": "c"
-},
-"C_Cpp.errorSquiggles": "disabled"
+    "fsl_iomuxc.h": "c",
+    "delay.h": "c"
+  },
+  "C_Cpp.errorSquiggles": "disabled"
 }

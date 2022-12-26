@@ -45,7 +45,7 @@ Disassembly of section .text:
 8780008c:	e129f000 	msr	CPSR_fc, r0
 87800090:	e59fd0b4 	ldr	sp, [pc, #180]	; 8780014c <FIQ_Handler+0x34>
 87800094:	f1080080 	cpsie	i
-87800098:	ea00012b 	b	8780054c <main>
+87800098:	ea0001e9 	b	87800844 <main>
 
 8780009c <Undefine_Instruction_Handler>:
 8780009c:	e59f0080 	ldr	r0, [pc, #128]	; 87800124 <FIQ_Handler+0xc>
@@ -105,7 +105,7 @@ Disassembly of section .text:
 87800144:	80600000 	rsbhi	r0, r0, r0
 87800148:	80400000 	subhi	r0, r0, r0
 8780014c:	80200000 	eorhi	r0, r0, r0
-87800150:	878004c8 	strhi	r0, [r0, r8, asr #9]
+87800150:	878006bc 			; <UNDEFINED> instruction: 0x878006bc
 87800154:	00002441 	andeq	r2, r0, r1, asr #8
 87800158:	61656100 	cmnvs	r5, r0, lsl #2
 8780015c:	01006962 	tsteq	r0, r2, ror #18
@@ -195,63 +195,65 @@ Disassembly of section .text:
 87800294:	e3a03000 	mov	r3, #0, 0
 87800298:	e52de004 	push	{lr}		; (str lr, [sp, #-4]!)
 8780029c:	e340320e 	movt	r3, #526	; 0x20e
-878002a0:	e24dd00c 	sub	sp, sp, #12, 0
-878002a4:	e3a0e005 	mov	lr, #5, 0
-878002a8:	e30110b0 	movw	r1, #4272	; 0x10b0
-878002ac:	e583e068 	str	lr, [r3, #104]	; 0x68
-878002b0:	e3a0c001 	mov	ip, #1, 0
-878002b4:	e58312f4 	str	r1, [r3, #756]	; 0x2f4
-878002b8:	e3a02000 	mov	r2, #0, 0
-878002bc:	e28d3008 	add	r3, sp, #8, 0
-878002c0:	e3a00903 	mov	r0, #49152	; 0xc000
-878002c4:	e58dc000 	str	ip, [sp]
-878002c8:	e3400209 	movt	r0, #521	; 0x209
-878002cc:	e5cd2004 	strb	r2, [sp, #4]
+878002a0:	e24dd01c 	sub	sp, sp, #28, 0
+878002a4:	e3a00005 	mov	r0, #5, 0
+878002a8:	e3a0c000 	mov	ip, #0, 0
+878002ac:	e5830068 	str	r0, [r3, #104]	; 0x68
+878002b0:	e301e0b0 	movw	lr, #4272	; 0x10b0
+878002b4:	e3a01001 	mov	r1, #1, 0
+878002b8:	e28d200c 	add	r2, sp, #12, 0
+878002bc:	e3a00903 	mov	r0, #49152	; 0xc000
+878002c0:	e583e2f4 	str	lr, [r3, #756]	; 0x2f4
+878002c4:	e3400209 	movt	r0, #521	; 0x209
+878002c8:	e58d100c 	str	r1, [sp, #12]
+878002cc:	e5cdc010 	strb	ip, [sp, #16]
 878002d0:	e3a01003 	mov	r1, #3, 0
-878002d4:	e913000c 	ldmdb	r3, {r2, r3}
-878002d8:	e28dd00c 	add	sp, sp, #12, 0
-878002dc:	e49de004 	pop	{lr}		; (ldr lr, [sp], #4)
-878002e0:	ea000009 	b	8780030c <GPIO_Init>
+878002d4:	e58dc000 	str	ip, [sp]
+878002d8:	e892000c 	ldm	r2, {r2, r3}
+878002dc:	eb00007a 	bl	878004cc <GPIO_Init>
+878002e0:	e28dd01c 	add	sp, sp, #28, 0
+878002e4:	e49df004 	pop	{pc}		; (ldr pc, [sp], #4)
 
-878002e4 <Led_On>:
-878002e4:	e3a00903 	mov	r0, #49152	; 0xc000
-878002e8:	e3a02000 	mov	r2, #0, 0
-878002ec:	e3400209 	movt	r0, #521	; 0x209
-878002f0:	e3a01003 	mov	r1, #3, 0
-878002f4:	ea00001c 	b	8780036c <GPIO_SetValue>
+878002e8 <Led_On>:
+878002e8:	e3a00903 	mov	r0, #49152	; 0xc000
+878002ec:	e3a02000 	mov	r2, #0, 0
+878002f0:	e3400209 	movt	r0, #521	; 0x209
+878002f4:	e3a01003 	mov	r1, #3, 0
+878002f8:	ea00001b 	b	8780036c <GPIO_SetValue>
 
-878002f8 <Led_Off>:
-878002f8:	e3a00903 	mov	r0, #49152	; 0xc000
-878002fc:	e3a02001 	mov	r2, #1, 0
-87800300:	e3400209 	movt	r0, #521	; 0x209
-87800304:	e3a01003 	mov	r1, #3, 0
-87800308:	ea000017 	b	8780036c <GPIO_SetValue>
+878002fc <Led_Off>:
+878002fc:	e3a00903 	mov	r0, #49152	; 0xc000
+87800300:	e3a02001 	mov	r2, #1, 0
+87800304:	e3400209 	movt	r0, #521	; 0x209
+87800308:	e3a01003 	mov	r1, #3, 0
+8780030c:	ea000016 	b	8780036c <GPIO_SetValue>
 
-8780030c <GPIO_Init>:
-8780030c:	e24dd008 	sub	sp, sp, #8, 0
-87800310:	e28dc008 	add	ip, sp, #8, 0
-87800314:	e90c000c 	stmdb	ip, {r2, r3}
-87800318:	e3a03001 	mov	r3, #1, 0
-8780031c:	e59d2000 	ldr	r2, [sp]
-87800320:	e1a01113 	lsl	r1, r3, r1
-87800324:	e3520000 	cmp	r2, #0, 0
-87800328:	1a000004 	bne	87800340 <GPIO_Init+0x34>
-8780032c:	e5903004 	ldr	r3, [r0, #4]
-87800330:	e1c31001 	bic	r1, r3, r1
-87800334:	e5801004 	str	r1, [r0, #4]
-87800338:	e28dd008 	add	sp, sp, #8, 0
-8780033c:	e12fff1e 	bx	lr
-87800340:	e5903004 	ldr	r3, [r0, #4]
-87800344:	e5dd2004 	ldrb	r2, [sp, #4]
-87800348:	e1833001 	orr	r3, r3, r1
-8780034c:	e5803004 	str	r3, [r0, #4]
-87800350:	e3520000 	cmp	r2, #0, 0
-87800354:	e5903000 	ldr	r3, [r0]
-87800358:	01c31001 	biceq	r1, r3, r1
-8780035c:	11811003 	orrne	r1, r1, r3
-87800360:	e5801000 	str	r1, [r0]
-87800364:	e28dd008 	add	sp, sp, #8, 0
-87800368:	e12fff1e 	bx	lr
+87800310 <Led_Toggle>:
+87800310:	e3a00903 	mov	r0, #49152	; 0xc000
+87800314:	e92d4010 	push	{r4, lr}
+87800318:	e3a01003 	mov	r1, #3, 0
+8780031c:	e3400209 	movt	r0, #521	; 0x209
+87800320:	eb00001a 	bl	87800390 <GPIO_ReadValue>
+87800324:	e3500000 	cmp	r0, #0, 0
+87800328:	e3a00903 	mov	r0, #49152	; 0xc000
+8780032c:	1a000004 	bne	87800344 <Led_Toggle+0x34>
+87800330:	e3a02001 	mov	r2, #1, 0
+87800334:	e3400209 	movt	r0, #521	; 0x209
+87800338:	e3a01003 	mov	r1, #3, 0
+8780033c:	e8bd4010 	pop	{r4, lr}
+87800340:	ea000009 	b	8780036c <GPIO_SetValue>
+87800344:	e3a02000 	mov	r2, #0, 0
+87800348:	e3400209 	movt	r0, #521	; 0x209
+8780034c:	e3a01003 	mov	r1, #3, 0
+87800350:	e8bd4010 	pop	{r4, lr}
+87800354:	ea000004 	b	8780036c <GPIO_SetValue>
+
+87800358 <Led_Set>:
+87800358:	e1a02000 	mov	r2, r0
+8780035c:	e3a00903 	mov	r0, #49152	; 0xc000
+87800360:	e3400209 	movt	r0, #521	; 0x209
+87800364:	e3a01003 	mov	r1, #3, 0
+87800368:	eaffffff 	b	8780036c <GPIO_SetValue>
 
 8780036c <GPIO_SetValue>:
 8780036c:	e3a03001 	mov	r3, #1, 0
@@ -264,160 +266,375 @@ Disassembly of section .text:
 87800388:	15801000 	strne	r1, [r0]
 8780038c:	e12fff1e 	bx	lr
 
-87800390 <GPIO_RedValue>:
+87800390 <GPIO_ReadValue>:
 87800390:	e5900000 	ldr	r0, [r0]
 87800394:	e1a00130 	lsr	r0, r0, r1
 87800398:	e2000001 	and	r0, r0, #1, 0
 8780039c:	e12fff1e 	bx	lr
 
-878003a0 <Beep_Init>:
-878003a0:	e3a03000 	mov	r3, #0, 0
-878003a4:	e52de004 	push	{lr}		; (str lr, [sp, #-4]!)
-878003a8:	e3403229 	movt	r3, #553	; 0x229
-878003ac:	e24dd00c 	sub	sp, sp, #12, 0
-878003b0:	e3a0e005 	mov	lr, #5, 0
-878003b4:	e30110b0 	movw	r1, #4272	; 0x10b0
-878003b8:	e583e00c 	str	lr, [r3, #12]
-878003bc:	e3a02001 	mov	r2, #1, 0
-878003c0:	e5831050 	str	r1, [r3, #80]	; 0x50
-878003c4:	e3a0c000 	mov	ip, #0, 0
-878003c8:	e28d3008 	add	r3, sp, #8, 0
-878003cc:	e3a00903 	mov	r0, #49152	; 0xc000
-878003d0:	e1a01002 	mov	r1, r2
-878003d4:	e58d2000 	str	r2, [sp]
-878003d8:	e5cdc004 	strb	ip, [sp, #4]
-878003dc:	e340020a 	movt	r0, #522	; 0x20a
-878003e0:	e913000c 	ldmdb	r3, {r2, r3}
-878003e4:	e28dd00c 	add	sp, sp, #12, 0
-878003e8:	e49de004 	pop	{lr}		; (ldr lr, [sp], #4)
-878003ec:	eaffffc6 	b	8780030c <GPIO_Init>
+878003a0 <GPIO_Enable_Interrupt>:
+878003a0:	e5903014 	ldr	r3, [r0, #20]
+878003a4:	e3a02001 	mov	r2, #1, 0
+878003a8:	e1831112 	orr	r1, r3, r2, lsl r1
+878003ac:	e5801014 	str	r1, [r0, #20]
+878003b0:	e12fff1e 	bx	lr
 
-878003f0 <Beep_On>:
-878003f0:	e3a00903 	mov	r0, #49152	; 0xc000
-878003f4:	e3a02000 	mov	r2, #0, 0
-878003f8:	e340020a 	movt	r0, #522	; 0x20a
-878003fc:	e3a01001 	mov	r1, #1, 0
-87800400:	eaffffd9 	b	8780036c <GPIO_SetValue>
+878003b4 <GPIO_Disable_Interrupt>:
+878003b4:	e5903014 	ldr	r3, [r0, #20]
+878003b8:	e3a02001 	mov	r2, #1, 0
+878003bc:	e1c31112 	bic	r1, r3, r2, lsl r1
+878003c0:	e5801014 	str	r1, [r0, #20]
+878003c4:	e12fff1e 	bx	lr
 
-87800404 <Beep_Off>:
-87800404:	e3a02001 	mov	r2, #1, 0
-87800408:	e3a00903 	mov	r0, #49152	; 0xc000
-8780040c:	e1a01002 	mov	r1, r2
-87800410:	e340020a 	movt	r0, #522	; 0x20a
-87800414:	eaffffd4 	b	8780036c <GPIO_SetValue>
+878003c8 <GPIO_Clean_Interrupt_Flag>:
+878003c8:	e5903018 	ldr	r3, [r0, #24]
+878003cc:	e3a02001 	mov	r2, #1, 0
+878003d0:	e1831112 	orr	r1, r3, r2, lsl r1
+878003d4:	e5801018 	str	r1, [r0, #24]
+878003d8:	e12fff1e 	bx	lr
 
-87800418 <Interrupt_Default_Irq_Handler>:
-87800418:	eafffffe 	b	87800418 <Interrupt_Default_Irq_Handler>
+878003dc <GPIO_Init_Interrupt>:
+878003dc:	e590c01c 	ldr	ip, [r0, #28]
+878003e0:	e3a03001 	mov	r3, #1, 0
+878003e4:	e1a03113 	lsl	r3, r3, r1
+878003e8:	e351000f 	cmp	r1, #15, 0
+878003ec:	e2422001 	sub	r2, r2, #1, 0
+878003f0:	e1ccc003 	bic	ip, ip, r3
+878003f4:	c2411010 	subgt	r1, r1, #16, 0
+878003f8:	e580c01c 	str	ip, [r0, #28]
+878003fc:	d280c00c 	addle	ip, r0, #12, 0
+87800400:	c280c010 	addgt	ip, r0, #16, 0
+87800404:	e3520004 	cmp	r2, #4, 0
+87800408:	979ff102 	ldrls	pc, [pc, r2, lsl #2]
+8780040c:	ea000004 	b	87800424 <GPIO_Init_Interrupt+0x48>
+87800410:	87800478 			; <UNDEFINED> instruction: 0x87800478
+87800414:	87800490 			; <UNDEFINED> instruction: 0x87800490
+87800418:	878004b8 			; <UNDEFINED> instruction: 0x878004b8
+8780041c:	87800428 	strhi	r0, [r0, r8, lsr #8]
+87800420:	87800450 			; <UNDEFINED> instruction: 0x87800450
+87800424:	e12fff1e 	bx	lr
+87800428:	e1a01081 	lsl	r1, r1, #1
+8780042c:	e59c2000 	ldr	r2, [ip]
+87800430:	e3a03003 	mov	r3, #3, 0
+87800434:	e1a01113 	lsl	r1, r3, r1
+87800438:	e1c23001 	bic	r3, r2, r1
+8780043c:	e58c3000 	str	r3, [ip]
+87800440:	e59c3000 	ldr	r3, [ip]
+87800444:	e1811003 	orr	r1, r1, r3
+87800448:	e58c1000 	str	r1, [ip]
+8780044c:	e12fff1e 	bx	lr
+87800450:	e59c2000 	ldr	r2, [ip]
+87800454:	e1a01081 	lsl	r1, r1, #1
+87800458:	e52de004 	push	{lr}		; (str lr, [sp, #-4]!)
+8780045c:	e3a0e003 	mov	lr, #3, 0
+87800460:	e1c2111e 	bic	r1, r2, lr, lsl r1
+87800464:	e58c1000 	str	r1, [ip]
+87800468:	e590201c 	ldr	r2, [r0, #28]
+8780046c:	e1833002 	orr	r3, r3, r2
+87800470:	e580301c 	str	r3, [r0, #28]
+87800474:	e49df004 	pop	{pc}		; (ldr pc, [sp], #4)
+87800478:	e59c3000 	ldr	r3, [ip]
+8780047c:	e1a01081 	lsl	r1, r1, #1
+87800480:	e3a02003 	mov	r2, #3, 0
+87800484:	e1c31112 	bic	r1, r3, r2, lsl r1
+87800488:	e58c1000 	str	r1, [ip]
+8780048c:	e12fff1e 	bx	lr
+87800490:	e59c3000 	ldr	r3, [ip]
+87800494:	e1a01081 	lsl	r1, r1, #1
+87800498:	e3a00003 	mov	r0, #3, 0
+8780049c:	e3a02001 	mov	r2, #1, 0
+878004a0:	e1c33110 	bic	r3, r3, r0, lsl r1
+878004a4:	e58c3000 	str	r3, [ip]
+878004a8:	e59c3000 	ldr	r3, [ip]
+878004ac:	e1831112 	orr	r1, r3, r2, lsl r1
+878004b0:	e58c1000 	str	r1, [ip]
+878004b4:	e12fff1e 	bx	lr
+878004b8:	e59c3000 	ldr	r3, [ip]
+878004bc:	e1a01081 	lsl	r1, r1, #1
+878004c0:	e3a00003 	mov	r0, #3, 0
+878004c4:	e3a02002 	mov	r2, #2, 0
+878004c8:	eafffff4 	b	878004a0 <GPIO_Init_Interrupt+0xc4>
 
-8780041c <Init_Interrupt>:
-8780041c:	e3003588 	movw	r3, #1416	; 0x588
-87800420:	e3002418 	movw	r2, #1048	; 0x418
-87800424:	e3483780 	movt	r3, #34688	; 0x8780
-87800428:	e3482780 	movt	r2, #34688	; 0x8780
-8780042c:	e2830c05 	add	r0, r3, #1280	; 0x500
-87800430:	e3a01000 	mov	r1, #0, 0
-87800434:	e52de004 	push	{lr}		; (str lr, [sp, #-4]!)
-87800438:	e5832000 	str	r2, [r3]
-8780043c:	e2833008 	add	r3, r3, #8, 0
-87800440:	e5031004 	str	r1, [r3, #-4]
-87800444:	e1500003 	cmp	r0, r3
-87800448:	1afffffa 	bne	87800438 <Init_Interrupt+0x1c>
-8780044c:	ee9f2f10 	mrc	15, 4, r2, cr15, cr0, {0}
-87800450:	e1a02822 	lsr	r2, r2, #16
-87800454:	e3a03000 	mov	r3, #0, 0
-87800458:	e3e0c000 	mvn	ip, #0, 0
-8780045c:	e1a02802 	lsl	r2, r2, #16
-87800460:	e282ea01 	add	lr, r2, #4096	; 0x1000
-87800464:	e59e0004 	ldr	r0, [lr, #4]
-87800468:	e200001f 	and	r0, r0, #31, 0
-8780046c:	e1500003 	cmp	r0, r3
-87800470:	e2831e46 	add	r1, r3, #1120	; 0x460
-87800474:	e782c101 	str	ip, [r2, r1, lsl #2]
-87800478:	e2833001 	add	r3, r3, #1, 0
-8780047c:	1afffffa 	bne	8780046c <Init_Interrupt+0x50>
-87800480:	e2822a02 	add	r2, r2, #8192	; 0x2000
-87800484:	e3a01001 	mov	r1, #1, 0
-87800488:	e3a0c0f8 	mov	ip, #248, 0	; 0xf8
-8780048c:	e3a00002 	mov	r0, #2, 0
-87800490:	e3a03000 	mov	r3, #0, 0
-87800494:	e582c004 	str	ip, [r2, #4]
-87800498:	e3483780 	movt	r3, #34688	; 0x8780
-8780049c:	e5820008 	str	r0, [r2, #8]
-878004a0:	e58e1000 	str	r1, [lr]
-878004a4:	e5821000 	str	r1, [r2]
-878004a8:	ee0c3f10 	mcr	15, 0, r3, cr12, cr0, {0}
-878004ac:	e49df004 	pop	{pc}		; (ldr pc, [sp], #4)
+878004cc <GPIO_Init>:
+878004cc:	e24dd008 	sub	sp, sp, #8, 0
+878004d0:	e24dc004 	sub	ip, sp, #4, 0
+878004d4:	e98c000c 	stmib	ip, {r2, r3}
+878004d8:	e3a03001 	mov	r3, #1, 0
+878004dc:	e59d2000 	ldr	r2, [sp]
+878004e0:	e1a03113 	lsl	r3, r3, r1
+878004e4:	e3520000 	cmp	r2, #0, 0
+878004e8:	1a000005 	bne	87800504 <GPIO_Init+0x38>
+878004ec:	e5902004 	ldr	r2, [r0, #4]
+878004f0:	e1c23003 	bic	r3, r2, r3
+878004f4:	e59d2008 	ldr	r2, [sp, #8]
+878004f8:	e5803004 	str	r3, [r0, #4]
+878004fc:	e28dd008 	add	sp, sp, #8, 0
+87800500:	eaffffb5 	b	878003dc <GPIO_Init_Interrupt>
+87800504:	e5902004 	ldr	r2, [r0, #4]
+87800508:	e5ddc004 	ldrb	ip, [sp, #4]
+8780050c:	e1822003 	orr	r2, r2, r3
+87800510:	e5802004 	str	r2, [r0, #4]
+87800514:	e35c0000 	cmp	ip, #0, 0
+87800518:	e5902000 	ldr	r2, [r0]
+8780051c:	01c23003 	biceq	r3, r2, r3
+87800520:	11833002 	orrne	r3, r3, r2
+87800524:	e5803000 	str	r3, [r0]
+87800528:	e59d2008 	ldr	r2, [sp, #8]
+8780052c:	e28dd008 	add	sp, sp, #8, 0
+87800530:	eaffffa9 	b	878003dc <GPIO_Init_Interrupt>
 
-878004b0 <Interrupt_Irq_Handler_Register>:
-878004b0:	e3003588 	movw	r3, #1416	; 0x588
-878004b4:	e3483780 	movt	r3, #34688	; 0x8780
-878004b8:	e083c180 	add	ip, r3, r0, lsl #3
-878004bc:	e7831180 	str	r1, [r3, r0, lsl #3]
-878004c0:	e58c2004 	str	r2, [ip, #4]
-878004c4:	e12fff1e 	bx	lr
+87800534 <Beep_Init>:
+87800534:	e3a03000 	mov	r3, #0, 0
+87800538:	e52de004 	push	{lr}		; (str lr, [sp, #-4]!)
+8780053c:	e3403229 	movt	r3, #553	; 0x229
+87800540:	e24dd01c 	sub	sp, sp, #28, 0
+87800544:	e3a00005 	mov	r0, #5, 0
+87800548:	e3a0e001 	mov	lr, #1, 0
+8780054c:	e583000c 	str	r0, [r3, #12]
+87800550:	e3a0c000 	mov	ip, #0, 0
+87800554:	e30110b0 	movw	r1, #4272	; 0x10b0
+87800558:	e28d200c 	add	r2, sp, #12, 0
+8780055c:	e3a00903 	mov	r0, #49152	; 0xc000
+87800560:	e5831050 	str	r1, [r3, #80]	; 0x50
+87800564:	e340020a 	movt	r0, #522	; 0x20a
+87800568:	e58de00c 	str	lr, [sp, #12]
+8780056c:	e5cdc010 	strb	ip, [sp, #16]
+87800570:	e1a0100e 	mov	r1, lr
+87800574:	e58dc000 	str	ip, [sp]
+87800578:	e892000c 	ldm	r2, {r2, r3}
+8780057c:	ebffffd2 	bl	878004cc <GPIO_Init>
+87800580:	e28dd01c 	add	sp, sp, #28, 0
+87800584:	e49df004 	pop	{pc}		; (ldr pc, [sp], #4)
 
-878004c8 <system_irq_handler>:
-878004c8:	e7e93050 	ubfx	r3, r0, #0, #10
-878004cc:	e353009f 	cmp	r3, #159, 0	; 0x9f
-878004d0:	812fff1e 	bxhi	lr
-878004d4:	e3002588 	movw	r2, #1416	; 0x588
-878004d8:	e1a00003 	mov	r0, r3
-878004dc:	e3482780 	movt	r2, #34688	; 0x8780
-878004e0:	e0821183 	add	r1, r2, r3, lsl #3
-878004e4:	e7923183 	ldr	r3, [r2, r3, lsl #3]
-878004e8:	e5911004 	ldr	r1, [r1, #4]
-878004ec:	e12fff13 	bx	r3
+87800588 <Beep_On>:
+87800588:	e3a00903 	mov	r0, #49152	; 0xc000
+8780058c:	e3a02000 	mov	r2, #0, 0
+87800590:	e340020a 	movt	r0, #522	; 0x20a
+87800594:	e3a01001 	mov	r1, #1, 0
+87800598:	eaffff73 	b	8780036c <GPIO_SetValue>
 
-878004f0 <delay_ms>:
-878004f0:	e24dd008 	sub	sp, sp, #8, 0
-878004f4:	e58d0004 	str	r0, [sp, #4]
-878004f8:	e59d3004 	ldr	r3, [sp, #4]
-878004fc:	e3530000 	cmp	r3, #0, 0
-87800500:	e2433001 	sub	r3, r3, #1, 0
-87800504:	e58d3004 	str	r3, [sp, #4]
-87800508:	1afffffa 	bne	878004f8 <delay_ms+0x8>
-8780050c:	e28dd008 	add	sp, sp, #8, 0
-87800510:	e12fff1e 	bx	lr
+8780059c <Beep_Off>:
+8780059c:	e3a02001 	mov	r2, #1, 0
+878005a0:	e3a00903 	mov	r0, #49152	; 0xc000
+878005a4:	e1a01002 	mov	r1, r2
+878005a8:	e340020a 	movt	r0, #522	; 0x20a
+878005ac:	eaffff6e 	b	8780036c <GPIO_SetValue>
 
-87800514 <Delay>:
-87800514:	e24dd008 	sub	sp, sp, #8, 0
-87800518:	e58d0004 	str	r0, [sp, #4]
-8780051c:	e59d3004 	ldr	r3, [sp, #4]
-87800520:	e3530000 	cmp	r3, #0, 0
-87800524:	e2433001 	sub	r3, r3, #1, 0
-87800528:	e58d3004 	str	r3, [sp, #4]
-8780052c:	0a000004 	beq	87800544 <Delay+0x30>
-87800530:	e30027ff 	movw	r2, #2047	; 0x7ff
-87800534:	e3520000 	cmp	r2, #0, 0
-87800538:	e2422001 	sub	r2, r2, #1, 0
-8780053c:	1afffffc 	bne	87800534 <Delay+0x20>
-87800540:	eafffff5 	b	8780051c <Delay+0x8>
-87800544:	e28dd008 	add	sp, sp, #8, 0
-87800548:	e12fff1e 	bx	lr
+878005b0 <Beep_Toggle>:
+878005b0:	e3a00903 	mov	r0, #49152	; 0xc000
+878005b4:	e92d4010 	push	{r4, lr}
+878005b8:	e3a01001 	mov	r1, #1, 0
+878005bc:	e340020a 	movt	r0, #522	; 0x20a
+878005c0:	ebffff72 	bl	87800390 <GPIO_ReadValue>
+878005c4:	e3500000 	cmp	r0, #0, 0
+878005c8:	1a000005 	bne	878005e4 <Beep_Toggle+0x34>
+878005cc:	e3a02001 	mov	r2, #1, 0
+878005d0:	e3a00903 	mov	r0, #49152	; 0xc000
+878005d4:	e1a01002 	mov	r1, r2
+878005d8:	e340020a 	movt	r0, #522	; 0x20a
+878005dc:	e8bd4010 	pop	{r4, lr}
+878005e0:	eaffff61 	b	8780036c <GPIO_SetValue>
+878005e4:	e3a00903 	mov	r0, #49152	; 0xc000
+878005e8:	e3a02000 	mov	r2, #0, 0
+878005ec:	e340020a 	movt	r0, #522	; 0x20a
+878005f0:	e3a01001 	mov	r1, #1, 0
+878005f4:	e8bd4010 	pop	{r4, lr}
+878005f8:	eaffff5b 	b	8780036c <GPIO_SetValue>
+
+878005fc <Beep_Set>:
+878005fc:	e1a02000 	mov	r2, r0
+87800600:	e3a00903 	mov	r0, #49152	; 0xc000
+87800604:	e340020a 	movt	r0, #522	; 0x20a
+87800608:	e3a01001 	mov	r1, #1, 0
+8780060c:	eaffff56 	b	8780036c <GPIO_SetValue>
+
+87800610 <Interrupt_Default_Irq_Handler>:
+87800610:	eafffffe 	b	87800610 <Interrupt_Default_Irq_Handler>
+
+87800614 <Init_Interrupt>:
+87800614:	e3003884 	movw	r3, #2180	; 0x884
+87800618:	e3a02000 	mov	r2, #0, 0
+8780061c:	e3483780 	movt	r3, #34688	; 0x8780
+87800620:	e3001610 	movw	r1, #1552	; 0x610
+87800624:	e52de004 	push	{lr}		; (str lr, [sp, #-4]!)
+87800628:	e3481780 	movt	r1, #34688	; 0x8780
+8780062c:	e4832004 	str	r2, [r3], #4
+87800630:	e2830c05 	add	r0, r3, #1280	; 0x500
+87800634:	e8830006 	stm	r3, {r1, r2}
+87800638:	e2833008 	add	r3, r3, #8, 0
+8780063c:	e1500003 	cmp	r0, r3
+87800640:	1afffffb 	bne	87800634 <Init_Interrupt+0x20>
+87800644:	ee9f2f10 	mrc	15, 4, r2, cr15, cr0, {0}
+87800648:	e1a02822 	lsr	r2, r2, #16
+8780064c:	e3a03000 	mov	r3, #0, 0
+87800650:	e3e0c000 	mvn	ip, #0, 0
+87800654:	e1a02802 	lsl	r2, r2, #16
+87800658:	e282ea01 	add	lr, r2, #4096	; 0x1000
+8780065c:	e59e0004 	ldr	r0, [lr, #4]
+87800660:	e200001f 	and	r0, r0, #31, 0
+87800664:	e1500003 	cmp	r0, r3
+87800668:	e2831e46 	add	r1, r3, #1120	; 0x460
+8780066c:	e782c101 	str	ip, [r2, r1, lsl #2]
+87800670:	e2833001 	add	r3, r3, #1, 0
+87800674:	1afffffa 	bne	87800664 <Init_Interrupt+0x50>
+87800678:	e2822a02 	add	r2, r2, #8192	; 0x2000
+8780067c:	e3a01001 	mov	r1, #1, 0
+87800680:	e3a0c0f8 	mov	ip, #248, 0	; 0xf8
+87800684:	e3a00002 	mov	r0, #2, 0
+87800688:	e3a03000 	mov	r3, #0, 0
+8780068c:	e582c004 	str	ip, [r2, #4]
+87800690:	e3483780 	movt	r3, #34688	; 0x8780
+87800694:	e5820008 	str	r0, [r2, #8]
+87800698:	e58e1000 	str	r1, [lr]
+8780069c:	e5821000 	str	r1, [r2]
+878006a0:	ee0c3f10 	mcr	15, 0, r3, cr12, cr0, {0}
+878006a4:	e49df004 	pop	{pc}		; (ldr pc, [sp], #4)
+
+878006a8 <Interrupt_Irq_Handler_Register>:
+878006a8:	e3003884 	movw	r3, #2180	; 0x884
+878006ac:	e3483780 	movt	r3, #34688	; 0x8780
+878006b0:	e0830180 	add	r0, r3, r0, lsl #3
+878006b4:	e9800006 	stmib	r0, {r1, r2}
+878006b8:	e12fff1e 	bx	lr
+
+878006bc <system_irq_handler>:
+878006bc:	e7e93050 	ubfx	r3, r0, #0, #10
+878006c0:	e353009f 	cmp	r3, #159, 0	; 0x9f
+878006c4:	812fff1e 	bxhi	lr
+878006c8:	e92d4010 	push	{r4, lr}
+878006cc:	e3004884 	movw	r4, #2180	; 0x884
+878006d0:	e3484780 	movt	r4, #34688	; 0x8780
+878006d4:	e1a00003 	mov	r0, r3
+878006d8:	e1a02004 	mov	r2, r4
+878006dc:	e5941000 	ldr	r1, [r4]
+878006e0:	e2811001 	add	r1, r1, #1, 0
+878006e4:	e4821004 	str	r1, [r2], #4
+878006e8:	e0821183 	add	r1, r2, r3, lsl #3
+878006ec:	e7923183 	ldr	r3, [r2, r3, lsl #3]
+878006f0:	e5911004 	ldr	r1, [r1, #4]
+878006f4:	e12fff33 	blx	r3
+878006f8:	e5943000 	ldr	r3, [r4]
+878006fc:	e2433001 	sub	r3, r3, #1, 0
+87800700:	e5843000 	str	r3, [r4]
+87800704:	e8bd8010 	pop	{r4, pc}
+
+87800708 <Key0_Interrupt_Irq_Handler>:
+87800708:	e92d4010 	push	{r4, lr}
+8780070c:	e3a0000a 	mov	r0, #10, 0
+87800710:	eb00003d 	bl	8780080c <Delay>
+87800714:	e3a00903 	mov	r0, #49152	; 0xc000
+87800718:	e3a01012 	mov	r1, #18, 0
+8780071c:	e3400209 	movt	r0, #521	; 0x209
+87800720:	ebffff1a 	bl	87800390 <GPIO_ReadValue>
+87800724:	e3500000 	cmp	r0, #0, 0
+87800728:	18bd8010 	popne	{r4, pc}
+8780072c:	e3004d88 	movw	r4, #3464	; 0xd88
+87800730:	e3484780 	movt	r4, #34688	; 0x8780
+87800734:	e5943000 	ldr	r3, [r4]
+87800738:	e16f3f13 	clz	r3, r3
+8780073c:	e1a032a3 	lsr	r3, r3, #5
+87800740:	e1a00003 	mov	r0, r3
+87800744:	e5843000 	str	r3, [r4]
+87800748:	ebffffab 	bl	878005fc <Beep_Set>
+8780074c:	e5d40000 	ldrb	r0, [r4]
+87800750:	e8bd4010 	pop	{r4, lr}
+87800754:	eafffeff 	b	87800358 <Led_Set>
+
+87800758 <Key0_Init>:
+87800758:	e92d4030 	push	{r4, r5, lr}
+8780075c:	e3a03000 	mov	r3, #0, 0
+87800760:	e24dd01c 	sub	sp, sp, #28, 0
+87800764:	e3a04903 	mov	r4, #49152	; 0xc000
+87800768:	e340320e 	movt	r3, #526	; 0x20e
+8780076c:	e3a05000 	mov	r5, #0, 0
+87800770:	e3a0c004 	mov	ip, #4, 0
+87800774:	e3a00005 	mov	r0, #5, 0
+87800778:	e30f1080 	movw	r1, #61568	; 0xf080
+8780077c:	e3404209 	movt	r4, #521	; 0x209
+87800780:	e28d200c 	add	r2, sp, #12, 0
+87800784:	e583008c 	str	r0, [r3, #140]	; 0x8c
+87800788:	e5831318 	str	r1, [r3, #792]	; 0x318
+8780078c:	e1a00004 	mov	r0, r4
+87800790:	e58d500c 	str	r5, [sp, #12]
+87800794:	e3a01012 	mov	r1, #18, 0
+87800798:	e5cd5010 	strb	r5, [sp, #16]
+8780079c:	e58dc000 	str	ip, [sp]
+878007a0:	e892000c 	ldm	r2, {r2, r3}
+878007a4:	ebffff48 	bl	878004cc <GPIO_Init>
+878007a8:	ee9f3f10 	mrc	15, 4, r3, cr15, cr0, {0}
+878007ac:	e1a03823 	lsr	r3, r3, #16
+878007b0:	e3a0c008 	mov	ip, #8, 0
+878007b4:	e3001708 	movw	r1, #1800	; 0x708
+878007b8:	e1a03803 	lsl	r3, r3, #16
+878007bc:	e1a02005 	mov	r2, r5
+878007c0:	e3481780 	movt	r1, #34688	; 0x8780
+878007c4:	e2833a01 	add	r3, r3, #4096	; 0x1000
+878007c8:	e3a00063 	mov	r0, #99, 0	; 0x63
+878007cc:	e583c10c 	str	ip, [r3, #268]	; 0x10c
+878007d0:	ebffffb4 	bl	878006a8 <Interrupt_Irq_Handler_Register>
+878007d4:	e1a00004 	mov	r0, r4
+878007d8:	e3a01012 	mov	r1, #18, 0
+878007dc:	e28dd01c 	add	sp, sp, #28, 0
+878007e0:	e8bd4030 	pop	{r4, r5, lr}
+878007e4:	eafffeed 	b	878003a0 <GPIO_Enable_Interrupt>
+
+878007e8 <delay_ms>:
+878007e8:	e24dd008 	sub	sp, sp, #8, 0
+878007ec:	e58d0004 	str	r0, [sp, #4]
+878007f0:	e59d3004 	ldr	r3, [sp, #4]
+878007f4:	e3530000 	cmp	r3, #0, 0
+878007f8:	e2433001 	sub	r3, r3, #1, 0
+878007fc:	e58d3004 	str	r3, [sp, #4]
+87800800:	1afffffa 	bne	878007f0 <delay_ms+0x8>
+87800804:	e28dd008 	add	sp, sp, #8, 0
+87800808:	e12fff1e 	bx	lr
+
+8780080c <Delay>:
+8780080c:	e24dd008 	sub	sp, sp, #8, 0
+87800810:	e58d0004 	str	r0, [sp, #4]
+87800814:	e59d3004 	ldr	r3, [sp, #4]
+87800818:	e3530000 	cmp	r3, #0, 0
+8780081c:	e2433001 	sub	r3, r3, #1, 0
+87800820:	e58d3004 	str	r3, [sp, #4]
+87800824:	0a000004 	beq	8780083c <Delay+0x30>
+87800828:	e30027ff 	movw	r2, #2047	; 0x7ff
+8780082c:	e3520000 	cmp	r2, #0, 0
+87800830:	e2422001 	sub	r2, r2, #1, 0
+87800834:	1afffffc 	bne	8780082c <Delay+0x20>
+87800838:	eafffff5 	b	87800814 <Delay+0x8>
+8780083c:	e28dd008 	add	sp, sp, #8, 0
+87800840:	e12fff1e 	bx	lr
 
 Disassembly of section .text.startup:
 
-8780054c <main>:
-8780054c:	e92d4010 	push	{r4, lr}
-87800550:	ebffffb1 	bl	8780041c <Init_Interrupt>
-87800554:	ebffff13 	bl	878001a8 <Clk_Freq_Init>
-87800558:	ebffff07 	bl	8780017c <Clk_Init>
-8780055c:	ebffff4c 	bl	87800294 <Led_Init>
-87800560:	ebffff8e 	bl	878003a0 <Beep_Init>
-87800564:	e3a00f7d 	mov	r0, #500	; 0x1f4
-87800568:	ebffffe9 	bl	87800514 <Delay>
-8780056c:	ebffff5c 	bl	878002e4 <Led_On>
-87800570:	ebffff9e 	bl	878003f0 <Beep_On>
-87800574:	e3a00f7d 	mov	r0, #500	; 0x1f4
-87800578:	ebffffe5 	bl	87800514 <Delay>
-8780057c:	ebffff5d 	bl	878002f8 <Led_Off>
-87800580:	ebffff9f 	bl	87800404 <Beep_Off>
-87800584:	eafffff6 	b	87800564 <main+0x18>
+87800844 <main>:
+87800844:	e92d4010 	push	{r4, lr}
+87800848:	ebffff71 	bl	87800614 <Init_Interrupt>
+8780084c:	ebfffe55 	bl	878001a8 <Clk_Freq_Init>
+87800850:	ebfffe49 	bl	8780017c <Clk_Init>
+87800854:	ebfffe8e 	bl	87800294 <Led_Init>
+87800858:	ebffff35 	bl	87800534 <Beep_Init>
+8780085c:	ebffffbd 	bl	87800758 <Key0_Init>
+87800860:	e3a00f7d 	mov	r0, #500	; 0x1f4
+87800864:	ebffffe8 	bl	8780080c <Delay>
+87800868:	ebfffe9e 	bl	878002e8 <Led_On>
+8780086c:	ebffff45 	bl	87800588 <Beep_On>
+87800870:	e3a00f7d 	mov	r0, #500	; 0x1f4
+87800874:	ebffffe4 	bl	8780080c <Delay>
+87800878:	ebfffe9f 	bl	878002fc <Led_Off>
+8780087c:	ebffff46 	bl	8780059c <Beep_Off>
+87800880:	eafffff6 	b	87800860 <main+0x1c>
 
 Disassembly of section .bss:
 
-87800588 <__bss_start>:
+87800884 <__bss_start>:
+87800884:	00000000 	andeq	r0, r0, r0
+
+87800888 <_irqInterruptTables>:
 	...
+
+87800d88 <state.9514>:
+87800d88:	00000000 	andeq	r0, r0, r0
 
 Disassembly of section .comment:
 

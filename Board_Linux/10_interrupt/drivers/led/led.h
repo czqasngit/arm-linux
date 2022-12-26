@@ -8,3 +8,5 @@ void Led_Init();
 void Led_On();
 /// @brief 关灯
 void Led_Off();
+void Led_Toggle();
+void Led_Set(char value);

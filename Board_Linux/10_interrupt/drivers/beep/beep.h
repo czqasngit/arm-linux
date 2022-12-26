@@ -5,5 +5,7 @@
 
 void Beep_Init();
 void Beep_On();
+void Beep_Toggle();
 void Beep_Off();
+void Beep_Set(char value);
 #endif
