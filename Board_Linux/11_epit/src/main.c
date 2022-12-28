@@ -5,6 +5,7 @@
 #include "beep.h"
 #include "interrupt.h"
 #include "key0.h"
+#include "epit.h"
 
 int main(void)
 {
@@ -15,9 +16,10 @@ int main(void)
     Led_Init();
     Beep_Init();
     Key0_Init();
+    Epit_Init(500);
     while (1)
     {
-        // Delay(500);
+        Delay(500);
         // Led_On();
         // Beep_On();
         // Delay(500);
