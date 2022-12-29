@@ -60,6 +60,8 @@ void Key0_Epit1_Interrupt_Irq_Handler(unsigned int gicciar, void *context)
 }
 void Key0_Filter_Start(unsigned int duration)
 {
+    /// 开启之前先关闭之前的
+    Key0_Filter_Stop();
     EPIT1->LR &= ~0xFFFFFFFF; /// 加载寄存器先清
     float frq = 1.0 / 66000000;
     int lrVal = duration / 1000.0 / frq;
