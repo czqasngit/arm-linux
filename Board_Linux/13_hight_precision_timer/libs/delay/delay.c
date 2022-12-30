@@ -24,6 +24,7 @@ void Delay_Init()
     while ((GPT1->CR >> 15) & 0x1)
     {
     }
+    /// bit0:11
     GPT1->PR &= ~(0x7FF << 0);
     /// 进入GPT1的时钟源为66MHz
     /// 这里设置GPT1的频率为66分频,频率则为1MHz, 一个计数是1us
