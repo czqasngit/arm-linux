@@ -51,7 +51,7 @@ void Key0_Epit1_Interrupt_Irq_Handler(unsigned int gicciar, void *context)
     static int state = 0;
     if (GPIO_ReadValue(GPIO1, 18) == 0)
     {
-        state != state;
+        state = !state;
         Beep_Set(state);
         Led_Set(state);
     }
