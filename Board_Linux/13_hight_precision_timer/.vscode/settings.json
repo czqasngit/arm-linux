@@ -9,5 +9,7 @@
     "fsl_iomuxc.h": "c",
     "delay.h": "c"
   },
-  "C_Cpp.errorSquiggles": "disabled"
+  "C_Cpp.errorSquiggles": "disabled",
+  "editor.clang_format_style": "file",
+  "editor.clang_format_path": ".clang_format"
 }

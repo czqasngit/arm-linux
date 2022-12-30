@@ -24,8 +24,7 @@ void Key0_Init()
     GPIO_Enable_Interrupt(GPIO1, 18);
     Key0_Filter_Init();
 }
-void Key0_Filter_Init()
-{
+void Key0_Filter_Init() {
     /*
             EPIT1_CR寄存器
             bit0: enable epit(1: enable, 0: disable)
@@ -68,8 +67,7 @@ void Key0_Filter_Start(unsigned int duration)
     EPIT1->LR = lrVal + 1;
     EPIT1->CR |= (1 << 0);
 }
-void Key0_Filter_Stop()
-{
+void Key0_Filter_Stop() {
     EPIT1->CR &= ~(1 << 0);
 }
 

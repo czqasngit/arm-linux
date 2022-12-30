@@ -16,14 +16,11 @@ void Delay(volatile unsigned int n)
     }
 }
 
-void Delay_Init()
-{
+void Delay_Init() {
     /* 复位GPT定时器, bit15写入1复位*/
     GPT1->CR |= 1 << 15;
     /* 等待复位完成,复位完成后bit15的值是0 */
-    while ((GPT1->CR >> 15) & 0x1)
-    {
-    }
+    while ((GPT1->CR >> 15) & 0x1);
     /// bit0:11
     GPT1->PR &= ~(0x7FF << 0);
     /// 进入GPT1的时钟源为66MHz
@@ -69,11 +66,9 @@ void HighPrecisionDelayNS(unsigned int us)
             break;
     }
 }
-void HightPrecisionDelayMS(unsigned int ms)
-{
+void HightPrecisionDelayMS(unsigned int ms) {
     unsigned int total = ms;
-    while (total > 0)
-    {
+    while (total > 0) {
         HighPrecisionDelayNS(1000);
         total--;
     }
