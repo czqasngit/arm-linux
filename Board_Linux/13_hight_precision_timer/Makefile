@@ -1,7 +1,7 @@
 # 编译器前缀
 COMPILER 		:= arm-unknown-linux-gnueabihf-
 # 目录产物名称
-TARGET 			:= interrupt
+TARGET 			:= hight_precision_timer
 
 CC 				:= $(COMPILER)gcc
 LD          	:= $(COMPILER)ld

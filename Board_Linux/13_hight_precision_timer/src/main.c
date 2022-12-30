@@ -17,14 +17,15 @@ int main(void)
     Beep_Init();
     Key0_Init();
     Epit_Init(500);
+    Delay_Init();
     while (1)
     {
-        Delay(500);
-        // Led_On();
-        // Beep_On();
-        // Delay(500);
-        // Led_Off();
-        // Beep_Off();
+        HightPrecisionDelayMS(500);
+        Led_On();
+        Beep_On();
+        HightPrecisionDelayMS(500);
+        Led_Off();
+        Beep_Off();
     }
 
     return 0;
