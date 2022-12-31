@@ -16,7 +16,7 @@ int main(void)
     Led_Init();
     Beep_Init();
     Key0_Init();
-    Epit_Init(500);
+    // Epit_Init();
     while (1)
     {
         Delay(500);
