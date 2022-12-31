@@ -195,7 +195,7 @@ Disassembly of section .text:
 87800246:	bf00      	nop
 
 87800248 <Led_Init>:
-87800248:	f640 1348 	movw	r3, #2376	; 0x948
+87800248:	f640 1338 	movw	r3, #2360	; 0x938
 8780024c:	b570      	push	{r4, r5, r6, lr}
 8780024e:	f2c8 7380 	movt	r3, #34688	; 0x8780
 87800252:	2568      	movs	r5, #104	; 0x68
@@ -414,7 +414,7 @@ Disassembly of section .text:
 8780043a:	bf00      	nop
 
 8780043c <Beep_Init>:
-8780043c:	f640 1354 	movw	r3, #2388	; 0x954
+8780043c:	f640 1344 	movw	r3, #2372	; 0x944
 87800440:	b570      	push	{r4, r5, r6, lr}
 87800442:	f2c8 7380 	movt	r3, #34688	; 0x8780
 87800446:	250c      	movs	r5, #12
@@ -489,7 +489,7 @@ Disassembly of section .text:
 878004f0:	b4f0      	push	{r4, r5, r6, r7}
 878004f2:	f240 42ed 	movw	r2, #1261	; 0x4ed
 878004f6:	2400      	movs	r4, #0
-878004f8:	f640 1368 	movw	r3, #2408	; 0x968
+878004f8:	f640 1358 	movw	r3, #2392	; 0x958
 878004fc:	4621      	mov	r1, r4
 878004fe:	f2c8 7280 	movt	r2, #34688	; 0x8780
 87800502:	f2c8 7380 	movt	r3, #34688	; 0x8780
@@ -533,7 +533,7 @@ Disassembly of section .text:
 8780056e:	bf00      	nop
 
 87800570 <Interrupt_Irq_Handler_Register>:
-87800570:	f640 1368 	movw	r3, #2408	; 0x968
+87800570:	f640 1358 	movw	r3, #2392	; 0x958
 87800574:	f2c8 7380 	movt	r3, #34688	; 0x8780
 87800578:	eb03 00c0 	add.w	r0, r3, r0, lsl #3
 8780057c:	6041      	str	r1, [r0, #4]
@@ -547,7 +547,7 @@ Disassembly of section .text:
 8780058a:	d900      	bls.n	8780058e <system_irq_handler+0xa>
 8780058c:	4770      	bx	lr
 8780058e:	b510      	push	{r4, lr}
-87800590:	f640 1468 	movw	r4, #2408	; 0x968
+87800590:	f640 1458 	movw	r4, #2392	; 0x958
 87800594:	f2c8 7480 	movt	r4, #34688	; 0x8780
 87800598:	4618      	mov	r0, r3
 8780059a:	4622      	mov	r2, r4
@@ -570,7 +570,7 @@ Disassembly of section .text:
 878005c0:	f2c0 2009 	movt	r0, #521	; 0x209
 878005c4:	f7ff fea8 	bl	87800318 <GPIO_ReadValue>
 878005c8:	b970      	cbnz	r0, 878005e8 <Key0_Epit1_Interrupt_Irq_Handler+0x30>
-878005ca:	f640 1460 	movw	r4, #2400	; 0x960
+878005ca:	f640 1450 	movw	r4, #2384	; 0x950
 878005ce:	f2c8 7480 	movt	r4, #34688	; 0x8780
 878005d2:	7820      	ldrb	r0, [r4, #0]
 878005d4:	f7ff ff82 	bl	878004dc <Beep_Set>
@@ -730,7 +730,7 @@ Disassembly of section .text:
 87800758:	685b      	ldr	r3, [r3, #4]
 8780075a:	07db      	lsls	r3, r3, #31
 8780075c:	d50e      	bpl.n	8780077c <Epit1_Interrupt_Irq_Handler+0x2c>
-8780075e:	f640 1464 	movw	r4, #2404	; 0x964
+8780075e:	f640 1454 	movw	r4, #2388	; 0x954
 87800762:	f2c8 7480 	movt	r4, #34688	; 0x8780
 87800766:	7820      	ldrb	r0, [r4, #0]
 87800768:	f7ff fdc0 	bl	878002ec <Led_Set>
@@ -919,46 +919,43 @@ Disassembly of section .text.startup:
 8780090a:	f7ff fc33 	bl	87800174 <Clk_Init>
 8780090e:	f7ff fc9b 	bl	87800248 <Led_Init>
 87800912:	f7ff fd93 	bl	8780043c <Beep_Init>
-87800916:	f7ff fec3 	bl	878006a0 <Key0_Init>
-8780091a:	f44f 70fa 	mov.w	r0, #500	; 0x1f4
-8780091e:	f7ff ff35 	bl	8780078c <Epit_Init>
-87800922:	f7ff ff8d 	bl	87800840 <Delay_Init>
-87800926:	f44f 70fa 	mov.w	r0, #500	; 0x1f4
+87800916:	f7ff ff93 	bl	87800840 <Delay_Init>
+8780091a:	2032      	movs	r0, #50	; 0x32
+8780091c:	f7ff ffd2 	bl	878008c4 <HightPrecisionDelayMS>
+87800920:	f7ff fcb6 	bl	87800290 <Led_On>
+87800924:	f7ff fdac 	bl	87800480 <Beep_On>
+87800928:	2032      	movs	r0, #50	; 0x32
 8780092a:	f7ff ffcb 	bl	878008c4 <HightPrecisionDelayMS>
-8780092e:	f7ff fcaf 	bl	87800290 <Led_On>
-87800932:	f7ff fda5 	bl	87800480 <Beep_On>
-87800936:	f44f 70fa 	mov.w	r0, #500	; 0x1f4
-8780093a:	f7ff ffc3 	bl	878008c4 <HightPrecisionDelayMS>
-8780093e:	f7ff fcaf 	bl	878002a0 <Led_Off>
-87800942:	f7ff fda5 	bl	87800490 <Beep_Off>
-87800946:	e7ee      	b.n	87800926 <main+0x26>
+8780092e:	f7ff fcb7 	bl	878002a0 <Led_Off>
+87800932:	f7ff fdad 	bl	87800490 <Beep_Off>
+87800936:	e7f0      	b.n	8780091a <main+0x1a>
 
 Disassembly of section .rodata:
 
-87800948 <.LANCHOR0>:
-87800948:	00000001 	andeq	r0, r0, r1
-8780094c:	00000001 	andeq	r0, r0, r1
-87800950:	00000000 	andeq	r0, r0, r0
+87800938 <.LANCHOR0>:
+87800938:	00000001 	andeq	r0, r0, r1
+8780093c:	00000001 	andeq	r0, r0, r1
+87800940:	00000000 	andeq	r0, r0, r0
 
-87800954 <.LANCHOR0>:
-87800954:	00000001 	andeq	r0, r0, r1
-87800958:	00000001 	andeq	r0, r0, r1
-8780095c:	00000000 	andeq	r0, r0, r0
+87800944 <.LANCHOR0>:
+87800944:	00000001 	andeq	r0, r0, r1
+87800948:	00000001 	andeq	r0, r0, r1
+8780094c:	00000000 	andeq	r0, r0, r0
 
 Disassembly of section .data:
 
-87800960 <state.8001>:
-87800960:	00000001 	andeq	r0, r0, r1
+87800950 <state.8001>:
+87800950:	00000001 	andeq	r0, r0, r1
 
-87800964 <state.7937>:
-87800964:	00000001 	andeq	r0, r0, r1
+87800954 <state.7937>:
+87800954:	00000001 	andeq	r0, r0, r1
 
 Disassembly of section .bss:
 
-87800968 <__bss_start>:
-87800968:	00000000 	andeq	r0, r0, r0
+87800958 <__bss_start>:
+87800958:	00000000 	andeq	r0, r0, r0
 
-8780096c <_irqInterruptTables>:
+8780095c <_irqInterruptTables>:
 	...
 
 Disassembly of section .comment:

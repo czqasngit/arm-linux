@@ -15,15 +15,15 @@ int main(void)
     Clk_Init();
     Led_Init();
     Beep_Init();
-    Key0_Init();
-    Epit_Init(500);
+    // Key0_Init();
+    // Epit_Init(500);
     Delay_Init();
     while (1)
     {
-        HightPrecisionDelayMS(500);
+        HightPrecisionDelayMS(50);
         Led_On();
         Beep_On();
-        HightPrecisionDelayMS(500);
+        HightPrecisionDelayMS(50);
         Led_Off();
         Beep_Off();
     }
