@@ -1,5 +1,5 @@
 # 编译器前缀
-COMPILER 		:= arm-unknown-linux-gnueabihf-
+COMPILER 		:= arm-linux-gnueabihf-
 # 目录产物名称
 TARGET 			:= hight_precision_timer
 
