@@ -19,15 +19,14 @@ void Epit_Init(unsigned int duration)
     EPIT1->CR |= (1 << 2);      /// bit2
     EPIT1->CR |= (1 << 3);      /// bit3
     EPIT1->CR &= ~(0xFFF << 4); /// bit15-4,设置成1分频
+    EPIT1->CR |= (65 << 4);
     EPIT1->CR &= ~(3 << 24);    /// bit25-24 清0
     EPIT1->CR |= (1 << 24);     /// bit25-24 选择ipg clk时钟源
 
     EPIT1->LR &= ~0xFFFFFFFF; /// 加载寄存器先清
 
-    float frq = 1.0 / 66000000;
-    int lrVal = duration / 1000.0 / frq;
-    EPIT1->LR = lrVal + 1;
-
+    EPIT1->LR = duration * 1000;
+    EPIT1->CMPR = 0;    
     Interrupt_Irq_Handler_Register(EPIT1_IRQn, Epit1_Interrupt_Irq_Handler, NULL); /// 注册对应中断号的中断服务函数
 
     GIC_EnableIRQ(EPIT1_IRQn); /// enable epit1 irq中断
@@ -37,7 +36,7 @@ void Epit_Init(unsigned int duration)
 
 void Epit1_Interrupt_Irq_Handler(unsigned int gicciar, void *context)
 {
-    static int state = 0;
+    static int state = 1;
     if ((EPIT1->SR & 1 << 0) == 1)
     {
         Led_Set(state);
