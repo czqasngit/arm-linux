@@ -6,6 +6,7 @@
 #include "key0.h"
 #include "epit.h"
 #include "uart.h"
+#include "stdio.h"
 
 int main(void)
 {
@@ -21,16 +22,11 @@ int main(void)
     Delay_Init();
     while (1)
     {
-        // HightPrecisionDelayMS(50);
-        // Led_On();
-        // Beep_On();
-        // HightPrecisionDelayMS(50);
-        // Led_Off();
-        // Beep_Off();
-        Uart1_SendString("请输入一个字符: ");
-        char c = Uart1_ReadChar();
-        Uart1_SendString("你输入的字符是: " + c);
-        Uart1_SendString("\r\n");
+        int a, b;
+        printf("请输入两个整数,使用空格分开: \r\n");
+        scanf("%d %d", &a, &b);
+        printf("\r\n");
+        printf("%d + %d = %d, 16进制是: %#x \r\n", a, b, a + b, a + b);
     }
 
     return 0;
