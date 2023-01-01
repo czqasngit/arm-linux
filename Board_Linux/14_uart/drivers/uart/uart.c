@@ -206,4 +206,14 @@ void Uart_SetBaudrate(UART_Type *base, unsigned int baudrate, unsigned int srccl
     }
 }
 
+void putc(char c)
+{
+    Uart1_SendChar(c);
+}
+char getc()
+{
+    return Uart1_ReadChar();
+}
+
+/* 引入gcc中的函数库时所需要实现的函数,看样子应该是发生异常时调用的函数 */
 void raise(int sig_nr) {}

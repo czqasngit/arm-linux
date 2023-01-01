@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include "delay.h"
 #include "clk.h"
 #include "led.h"

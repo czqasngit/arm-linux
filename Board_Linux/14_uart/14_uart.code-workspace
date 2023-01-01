@@ -14,7 +14,11 @@
         "fsl_common.h": "c",
         "fsl_iomuxc.h": "c",
         "delay.h": "c",
-        "mcimx6y2.h": "c"
+        "mcimx6y2.h": "c",
+        "epit.h": "c",
+        "stdio.h": "c",
+        "uart.h": "c",
+        "vsprintf.h": "c"
     }
   }
 }

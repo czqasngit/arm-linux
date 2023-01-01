@@ -13,4 +13,7 @@ void Uart1_SendString(char *s);
 char Uart1_ReadChar();
 void Uart_SetBaudrate(UART_Type *base, unsigned int baudrate, unsigned int srcclock_hz);
 void raise(int sig_nr);
+/* putc, getc是移植过来的stdio中所需要使用的 */
+void putc(char c);
+char getc();
 #endif
