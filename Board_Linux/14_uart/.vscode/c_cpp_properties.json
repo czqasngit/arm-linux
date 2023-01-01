@@ -1,7 +1,7 @@
 {
   "configurations": [
     {
-      "includePath": ["${workspaceFolder}/**", "${workspaceFolder}/*/**", "${workspaceFolder}/common/*", "${workspaceFolder}/drivers/beep/*", "${workspaceFolder}/drivers/clk/*", "${workspaceFolder}/drivers/gpio/*", "${workspaceFolder}/drivers/interrupt/*", "${workspaceFolder}/drivers/key0/*", "${workspaceFolder}/drivers/epit/*", "${workspaceFolder}/drivers/led/*", "${workspaceFolder}/src/*"],
+      "includePath": ["${workspaceFolder}/**", "${workspaceFolder}/*/**", "${workspaceFolder}/common/*", "${workspaceFolder}/drivers/beep/*", "${workspaceFolder}/drivers/clk/*", "${workspaceFolder}/drivers/gpio/*", "${workspaceFolder}/drivers/interrupt/*", "${workspaceFolder}/drivers/key0/*", "${workspaceFolder}/drivers/epit/*", "${workspaceFolder}/drivers/led/*", "${workspaceFolder}/drivers/uart/*", "${workspaceFolder}/src/*"],
       "configurationProvider": "ms-vscode.makefile-tools"
     }
   ],

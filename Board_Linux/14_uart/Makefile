@@ -1,5 +1,5 @@
 # 编译器前缀
-COMPILER 		:= arm-linux-gnueabihf-
+COMPILER 		:= arm-unknown-linux-gnueabihf-
 # 目录产物名称
 TARGET 			:= hight_precision_timer
 
@@ -18,6 +18,7 @@ INCLUDE_DIRS 	:= 	common \
 					drivers/interrupt \
 					drivers/key0 \
 					drivers/epit \
+					drivers/uart \
 					libs/delay
 #源文件目录
 SRC_DIRS 		:= 	src \
@@ -28,6 +29,7 @@ SRC_DIRS 		:= 	src \
 					drivers/interrupt \
 					drivers/key0 \
 					drivers/epit \
+					drivers/uart \
 					libs/delay
 
 #INCLUDE_DIRS中所有的目录添加-I 前续,用于编译时增加链接头文件目录
