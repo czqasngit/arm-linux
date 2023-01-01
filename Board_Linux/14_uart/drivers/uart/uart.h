@@ -1,6 +1,6 @@
 #ifndef _H_UART_
 #define _H_UART_
-
+#include "MCIMX6Y2.h"
 void UART1_Init();
 void UART1_IO_Init();
 void UART1_Disable();
@@ -11,4 +11,6 @@ void UART1_Config();
 void Uart1_SendChar(char c);
 void Uart1_SendString(char *s);
 char Uart1_ReadChar();
+void Uart_SetBaudrate(UART_Type *base, unsigned int baudrate, unsigned int srcclock_hz);
+void raise(int sig_nr);
 #endif

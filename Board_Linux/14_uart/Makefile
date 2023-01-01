@@ -3,6 +3,8 @@ COMPILER 		:= arm-unknown-linux-gnueabihf-
 # 目录产物名称
 TARGET 			:= hight_precision_timer
 
+LIBPATH			:= -lgcc -L /Users/youxiaobin/arm-unknown-linux-gnueabihf/lib/gcc/arm-unknown-linux-gnueabihf/8.3.0
+
 CC 				:= $(COMPILER)gcc
 LD          	:= $(COMPILER)ld
 COPY     		:= $(COMPILER)objcopy
@@ -54,7 +56,7 @@ VPATH			:= $(SRC_DIRS)
 .PHONY: clean
 
 ./product/$(TARGET).bin : $(OBJS)
-	$(LD) -Timx6ull.lds -o ./product/$(TARGET).elf $^
+	$(LD) -Timx6ull.lds -o ./product/$(TARGET).elf $^ ${LIBPATH}
 	$(COPY) -O binary -S ./product/$(TARGET).elf $@ 
 	$(DUMP) -D -m arm ./product/$(TARGET).elf > ./debug/$(TARGET).dis
 
