@@ -10,5 +10,6 @@ void UART1_Enable();
 void UART1_Soft_Reset();
 void UART1_Config();
 void Uart1_SendChar(char c);
+void Uart1_SendString(char *s);
 char Uart1_ReadChar();
 #endif

@@ -67,6 +67,13 @@ void Uart1_SendChar(char c) {
     // bit:8 - 0,数据位
     UART1->UTXD = c;
 } 
+void Uart1_SendString(char *s) {
+    char *p = s;
+    while(*p) {
+        Uart1_SendChar(*p);
+        p ++;
+    }
+} 
 char Uart1_ReadChar() {
     // bit: 0
     // 0 No receive data ready
