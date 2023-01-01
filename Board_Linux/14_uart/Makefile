@@ -61,10 +61,10 @@ VPATH			:= $(SRC_DIRS)
 #指定要生成的目标已经依赖的目标取值范围
 #obj/start.o只能在SOBJS中去寻找
 $(SOBJS) : obj/%.o : %.s
-	$(CC) -Wall -nostdlib -O2  $(INCLUDE) -c $< -o $@ 
+	$(CC) -Wall -nostdlib -fno-builtin -O2  $(INCLUDE) -c $< -o $@ 
 
 $(COBJS) : obj/%.o : %.c
-	$(CC) -Wall -nostdlib -O2 --std=c11  $(INCLUDE) -c $< -o $@ 
+	$(CC) -Wall -nostdlib -fno-builtin -O2 --std=c11  $(INCLUDE) -c $< -o $@ 
 
 
 install:

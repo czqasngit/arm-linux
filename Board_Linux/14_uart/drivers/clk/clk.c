@@ -87,4 +87,8 @@ void Clk_Freq_Init()
     CCM->CSCMR1 &= ~(1 << 6);
     /// 将5-0 6个bit位清0,设置成1分频，此时已经是1分频了
     CCM->CSCMR1 &= ~(0x3F << 0);
+
+    /* 设置UART的时钟源为PLL3 480, 分频值为1,最终进入到UART的时钟为80MHz */
+    CCM->CSCDR1 &= ~(1 << 6);
+    CCM->CSCDR1 &= ~(0x3F); // 1分频
 }
