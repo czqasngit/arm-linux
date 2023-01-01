@@ -1,7 +1,9 @@
 #include "vsprintf.h"
 #include "string.h"
 #include "printf.h"
-#include "uart.h"
+
+extern void putc(char c);
+extern char getc();
 
 #define OUTBUFSIZE 1024
 #define INBUFSIZE 1024
