@@ -14,6 +14,8 @@ void UART1_Init()
     UART1_Soft_Reset();
     /* 配置UART1  */
     UART1_Config();
+    /* 启用UART1 */
+    UART1_Enable();
 }
 void UART1_IO_Init()
 {
