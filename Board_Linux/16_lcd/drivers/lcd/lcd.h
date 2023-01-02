@@ -13,4 +13,5 @@
 
 int LCD_Device_Id();
 void LCD_Init();
+void LCD_IO_Init();
 #endif

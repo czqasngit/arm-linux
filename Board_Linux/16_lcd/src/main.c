@@ -7,6 +7,7 @@
 #include "epit.h"
 #include "uart.h"
 #include "stdio.h"
+#include "lcd.h"
 
 int main(void)
 {
