@@ -7,8 +7,9 @@
 void LCD_Init() {
     /* 正点原子的开发板使用的RGB屏幕,首先需要读取一下LCD ID,目的是适配不同的屏幕 */
     int lcdDevicdID = LCD_Device_Id();
-    printf("LCD ID: %#x \n", lcdDevicdID);
+    printf("LCD ID: %#x \r\n", lcdDevicdID);
     LCD_IO_Init();
+    LCD_Open_Background_Light();
 }
 /*
     使用了三个IO来做这个ID值,通过三个开关来复用这三个IO,
@@ -117,10 +118,14 @@ void LCD_IO_Init() {
     IOMUXC_SetPinConfig(IOMUXC_LCD_HSYNC_LCDIF_HSYNC, 0xB9);
     IOMUXC_SetPinConfig(IOMUXC_LCD_VSYNC_LCDIF_VSYNC, 0xB9);
 
-    /* 背光,如果背光不点亮屏幕就是黑的 */
+   
+
+}
+
+void LCD_Open_Background_Light() {
+     /* 背光,如果背光不点亮屏幕就是黑的 */
     IOMUXC_SetPinMux(IOMUXC_GPIO1_IO08_GPIO1_IO08, 0);
     IOMUXC_SetPinConfig(IOMUXC_GPIO1_IO08_GPIO1_IO08, 0x01b0);
     GPIO_Init(GPIO1, 8, (GPIO_CONFIG){GPIO_DIRECTION_OUTPUT, 1, GPIO_INTERRUPT_MODE_NO_INTERRUPT});
-
-
+    printf("open lcd background light \r\n");
 }

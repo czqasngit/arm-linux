@@ -14,4 +14,5 @@
 int LCD_Device_Id();
 void LCD_Init();
 void LCD_IO_Init();
+void LCD_Open_Background_Light();
 #endif
