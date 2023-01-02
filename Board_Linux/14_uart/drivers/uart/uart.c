@@ -14,6 +14,7 @@ void UART1_Init()
     UART1_Soft_Reset();
     /* 配置UART1  */
     UART1_Config();
+    UART1_Enable();
 }
 void UART1_IO_Init()
 {
@@ -35,11 +36,11 @@ void UART1_Soft_Reset()
 {
     UART1->UCR2 &= ~(1 << 0);
     /// 等待复位完成
-    while (((UART1->UCR2 >> 0) & 0x1) == 0)
-        ;
+    while (((UART1->UCR2 >> 0) & 0x1) == 0);
 }
 void UART1_Config()
 {
+    // UART1->UCR1 = 0;
     UART1->UCR1 &= ~(1 < 14); /// 关闭自动波特率检测
     /* 配置UART1的数据位,奇偶校验,停止位等等 */
     /// 接受使能
@@ -56,7 +57,7 @@ void UART1_Config()
     UART1->UCR2 |= (1 << 14);
     // RXD Muxed Input Selected. Selects proper input pins for serial and Infrared input signal.
     // NOTE: In this chip, UARTs are used in MUXED mode, so that this bit should always be set.
-    UART1->UCR2 |= (1 << 2);
+    UART1->UCR3 |= (1 << 2);
 
 #if 0
     /* 手动推算的波特率数值 */
@@ -78,10 +79,9 @@ void Uart1_SendChar(char c)
     // bit: 3
     // 0 Transmit is incomplete
     // 1 Transmit is complete
-    while (((UART1->USR2 >> 3) & 0x1) == 0)
-        ;
+    while (((UART1->USR2 >> 3) & 0x1) == 0);
     // bit:8 - 0,数据位
-    UART1->UTXD = c;
+    UART1->UTXD = c & 0xFF;
 }
 void Uart1_SendString(char *s)
 {
@@ -99,9 +99,8 @@ char Uart1_ReadChar()
     // bit: 0
     // 0 No receive data ready
     // 1 Receive data ready
-    while (((UART1->USR2 >> 0) & 0x1) == 0)
-        ;
-    char c = (UART1->URXD & 0xF);
+    while (((UART1->USR2 >> 0) & 0x1) == 0);
+    char c = UART1->URXD;
     return c;
 }
 

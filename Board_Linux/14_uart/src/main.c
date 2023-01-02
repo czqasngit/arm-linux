@@ -21,15 +21,17 @@ int main(void)
     Delay_Init();
     while (1)
     {
-        // HightPrecisionDelayMS(50);
-        // Led_On();
-        // Beep_On();
-        // HightPrecisionDelayMS(50);
-        // Led_Off();
-        // Beep_Off();
+        HightPrecisionDelayMS(500);
+        Led_On();
+        Beep_On();
+        HightPrecisionDelayMS(500);
+        Led_Off();
+        Beep_Off();
+        Uart1_SendString("\r\n");
         Uart1_SendString("请输入一个字符: ");
         char c = Uart1_ReadChar();
-        Uart1_SendString("你输入的字符是: " + c);
+        Uart1_SendString("你输入的字符是: ");
+        Uart1_SendChar(c);
         Uart1_SendString("\r\n");
     }
 
