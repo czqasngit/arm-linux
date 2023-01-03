@@ -4,16 +4,67 @@
 #include "stdio.h"
 #include "delay.h"
 
+LCD_Device_Info lcd_device_info;
+
 void LCD_Init() {
     /* 正点原子的开发板使用的RGB屏幕,首先需要读取一下LCD ID,目的是适配不同的屏幕 */
-    int lcdDevicdID = LCD_Device_Id();
-    printf("LCD ID: %#x \r\n", lcdDevicdID);
+    LCD_Init_Device_Info();
     LCD_IO_Init();
     LCD_Open_Background_Light();
     // LCD软复位 10ms
     LCD_Soft_Reset();
     HightPrecisionDelayMS(10);
     LCD_Soft_Reset_Complete();
+}
+/* 根据device id(正点原子开发板特有的数据),其它开发板直接根据屏幕给定的参数来初始化LCD即可 */
+void LCD_Init_Device_Info() {
+     int lcdDevicdID = LCD_Device_Id();
+    printf("LCD ID: %#x \r\n", lcdDevicdID);
+    if(lcdDevicdID == ATK4342) {
+        lcd_device_info.width = 480;
+        lcd_device_info.height = 272;
+        lcd_device_info.hspw = 1;
+        lcd_device_info.hbp = 40;
+        lcd_device_info.hfp = 5;
+        lcd_device_info.vspw = 1;
+        lcd_device_info.vbp = 8;
+        lcd_device_info.vfp = 8;
+    } else if(lcdDevicdID == ATK4384) {
+        lcd_device_info.width = 800;
+        lcd_device_info.height = 480;
+        lcd_device_info.hspw = 48;
+        lcd_device_info.hbp = 88;
+        lcd_device_info.hfp = 40;
+        lcd_device_info.vspw = 3;
+        lcd_device_info.vbp = 32;
+        lcd_device_info.vfp = 13;
+    } else if(lcdDevicdID == ATK7084) {
+        lcd_device_info.width = 800;
+        lcd_device_info.height = 480;
+        lcd_device_info.hspw = 1;
+        lcd_device_info.hbp = 46;
+        lcd_device_info.hfp = 210;
+        lcd_device_info.vspw = 1;
+        lcd_device_info.vbp = 23;
+        lcd_device_info.vfp = 22;
+    } else if(lcdDevicdID == ATK7016) {
+        lcd_device_info.width = 1024;
+        lcd_device_info.height = 600;
+        lcd_device_info.hspw = 20;
+        lcd_device_info.hbp = 140;
+        lcd_device_info.hfp = 160;
+        lcd_device_info.vspw = 3;
+        lcd_device_info.vbp = 20;
+        lcd_device_info.vfp = 12;
+    }
+    lcd_device_info.byte_per_pixel = 4;     // 每个像素4个字节
+    // 显存起始地址,在内存里面开辟一块存储作为显存
+    // 当前开发板的DDR内存起始地址是0x80000000
+    // DDR总共是512MB,结束地址是: 0x80000000 + 0x20000000 = 0xA00000000
+    // 显存起始地址是0x89000000,到结束还有368MB
+    lcd_device_info.frameBuffer = LCD_FRAMEBUFFER_ADDR;     
+    lcd_device_info.foreColor = 0x00FFFFFF; // 画笔白色
+    lcd_device_info.backColor = 0x00000000; // 背景黑色
 }
 /*
     使用了三个IO来做这个ID值,通过三个开关来复用这三个IO,

@@ -11,14 +11,28 @@
 #define ATK7016 0x7016  /// 4.0     1024x600
 #define ATK1018 0x1018  /// 10.1    1280x800
 
+/// LCD显存起始地址
+#define LCD_FRAMEBUFFER_ADDR    (0x89000000)
+
+// 屏幕参数
 typedef struct _LCD_Device_Info {
     unsigned short width;       // 屏幕宽
     unsigned short height;      // 屏幕高
-    unsigned char pixelSize;    // 每个像素所占用的字节数
+    unsigned char byte_per_pixel;    // 每个像素所占用的字节数
+    unsigned short vspw;
+    unsigned short vbp;
+    unsigned short vfp;
+    unsigned short hspw;
+    unsigned short hbp;
+    unsigned short hfp;
+    unsigned int frameBuffer;       // 显存起始地址
+    unsigned int foreColor;         // 前景色
+    unsigned int backColor;         // 背景色
 } LCD_Device_Info;
 
-int LCD_Device_Id();
 void LCD_Init();
+void LCD_Init_Device_Info();
+int LCD_Device_Id();
 void LCD_IO_Init();
 void LCD_Open_Background_Light();
 void LCD_Soft_Reset();

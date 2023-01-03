@@ -95,6 +95,14 @@ void Clk_Uart_Init() {
     CCM->CSCDR1 &= ~(1 << 6);
     CCM->CSCDR1 &= ~(0x3F); // 1分频
 }
-void Clk_LCD_Init() {
-    
+/// @brief 初始化LCD时钟源
+/// @param loopDiv 设置DIV_SELECT 27 ~ 54
+/// @param preDiv 
+/// @param  
+void Clk_LCD_Init(unsigned char loopDiv, unsigned char preDiv, unsigned char ) {
+    /// LCD的计算公式里面涉及到两个寄存器用于控制小数部分的计算, 这里不使用小数，分母是1,分子是0
+    CCM_ANALOG->PLL_VIDEO_NUM = 0;
+    CCM_ANALOG->PLL_VIDEO_DENOM = 1; 
+    // 使能这个PLL输出(启用它)
+    CCM_ANALOG->PLL_VIDEO |= (1 << 13);
 }
