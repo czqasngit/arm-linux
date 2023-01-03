@@ -2,7 +2,7 @@
 #include "gpio.h"
 #include "const.h"
 #include "stdio.h"
-
+#include "delay.h"
 
 void LCD_Init() {
     /* 正点原子的开发板使用的RGB屏幕,首先需要读取一下LCD ID,目的是适配不同的屏幕 */
@@ -10,6 +10,10 @@ void LCD_Init() {
     printf("LCD ID: %#x \r\n", lcdDevicdID);
     LCD_IO_Init();
     LCD_Open_Background_Light();
+    // LCD软复位 10ms
+    LCD_Soft_Reset();
+    HightPrecisionDelayMS(10);
+    LCD_Soft_Reset_Complete();
 }
 /*
     使用了三个IO来做这个ID值,通过三个开关来复用这三个IO,
@@ -128,4 +132,11 @@ void LCD_Open_Background_Light() {
     IOMUXC_SetPinConfig(IOMUXC_GPIO1_IO08_GPIO1_IO08, 0x01b0);
     GPIO_Init(GPIO1, 8, (GPIO_CONFIG){GPIO_DIRECTION_OUTPUT, 1, GPIO_INTERRUPT_MODE_NO_INTERRUPT});
     printf("open lcd background light \r\n");
+}
+
+void LCD_Soft_Reset() {
+    LCDIF->CTRL |= 1 << 31;
+}
+void LCD_Soft_Reset_Complete() {
+    LCDIF->CTRL &= ~(1 << 31);
 }
