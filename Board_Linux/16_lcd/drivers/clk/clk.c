@@ -95,14 +95,31 @@ void Clk_Uart_Init() {
     CCM->CSCDR1 &= ~(1 << 6);
     CCM->CSCDR1 &= ~(0x3F); // 1分频
 }
-/// @brief 初始化LCD时钟源
-/// @param loopDiv 设置DIV_SELECT 27 ~ 54
-/// @param preDiv 
-/// @param  
-void Clk_LCD_Init(unsigned char loopDiv, unsigned char preDiv, unsigned char ) {
+void Clk_LCD_Init(unsigned char loopDiv, unsigned char preDiv, unsigned char podf) {
     /// LCD的计算公式里面涉及到两个寄存器用于控制小数部分的计算, 这里不使用小数，分母是1,分子是0
     CCM_ANALOG->PLL_VIDEO_NUM = 0;
     CCM_ANALOG->PLL_VIDEO_DENOM = 1; 
     // 使能这个PLL输出(启用它)
     CCM_ANALOG->PLL_VIDEO |= (1 << 13);
+    /// 设置成一分频 PLL_VIDEOn[POST_DIV_SELECT]
+    CCM_ANALOG->PLL_VIDEO &= ~(3 << 19);
+    CCM_ANALOG->PLL_VIDEO |= (2 << 19);
+    // 设置成一分频 CCM_ANALOG_MISC2n[VIDEO_DIV]
+    CCM_ANALOG->MISC2 &= ~(3 << 30);
+    CCM_ANALOG->MISC2 |= (2 << 30);
+    // 多路选择器,选择PLL5 CSCDR2[LCDIF1_PRE_CLK_SEL]
+    CCM->CSCDR2 &= ~(7 << 15);
+    CCM->CSCDR2 |= (2 << 15);
+    // 设置24MHz出来后的倍频
+    CCM_ANALOG->PLL_VIDEO &= ~(0x3F << 0);
+    CCM_ANALOG->PLL_VIDEO |= (loopDiv << 0)
+    // 前分频器 CSCDR2[LCDIF1_PRED] i
+    CCM->CSCDR2 &= ~(7 << 12);
+    CCM->CSCDR2 |= ((preDiv - 1) << 12);
+    // LCDIF1 CBCMR[LCDIF1_PODF]
+    CCM->CBCMR &= ~(7 << 23);
+    CCM->CBCMR |= ((podf - 1) << 23);
+    // CSCDR2[LCDIF1_CLK_SEL](11:9)
+    // 000 derive clock from divided pre-muxed LCDIF1 clock
+    CCM->CSCDR2 &= ~(7 << 9);
 }
