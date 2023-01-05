@@ -13,7 +13,9 @@
             "interrupt.h": "c",
             "fsl_common.h": "c",
             "fsl_iomuxc.h": "c",
-            "delay.h": "c"
+            "delay.h": "c",
+            "lcd.h": "c",
+            "lcdapi.h": "c"
         }
     }
 }

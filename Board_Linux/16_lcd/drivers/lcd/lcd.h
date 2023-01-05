@@ -14,6 +14,7 @@
 /// LCD显存起始地址
 #define LCD_FRAMEBUFFER_ADDR    (0x89000000)
 
+
 // 屏幕参数
 typedef struct _LCD_Device_Info {
     unsigned short width;       // 屏幕宽
@@ -30,6 +31,8 @@ typedef struct _LCD_Device_Info {
     unsigned int backColor;         // 背景色
 } LCD_Device_Info;
 
+extern LCD_Device_Info lcd_device_info;
+
 void LCD_Init();
 void LCD_Init_Device_Info();
 int LCD_Device_Id();
@@ -41,6 +44,7 @@ void LCD_Enable();
 void LCD_Disable();
 void LCD_Register_Config();
 void LCD_DrawPoint(unsigned short x, unsigned short y, unsigned int color);
+void LCD_DrawRect(unsigned int x0, unsigned int y0, unsigned int x1, unsigned int y1, unsigned int color);
 unsigned int LCD_GetPointColor(unsigned short x, unsigned short y);
 void LCD_Clean_Screen(unsigned int color);
 #endif

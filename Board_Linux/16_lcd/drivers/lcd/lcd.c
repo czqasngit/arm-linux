@@ -334,6 +334,13 @@ unsigned int LCD_GetPointColor(unsigned short x, unsigned short y) {
     unsigned int *drawPointPointer = (unsigned int *)drawPointAddr;
     return *drawPointPointer;
 }
+void LCD_DrawRect(unsigned int x0, unsigned int y0, unsigned int x1, unsigned int y1, unsigned int color) {
+    for(unsigned int i = x0; i <= x1; i ++) {
+        for(unsigned int j = y0; j <= y1; j ++) {
+            LCD_DrawPoint(i, j, color);
+        }
+    }
+}
 // 清屏幕
 void LCD_Clean_Screen(unsigned int color) {
     // 使用unsigned int *类型去读取显存
