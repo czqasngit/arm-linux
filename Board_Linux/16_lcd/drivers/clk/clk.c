@@ -112,7 +112,7 @@ void Clk_LCD_Init(unsigned char loopDiv, unsigned char preDiv, unsigned char pod
     CCM->CSCDR2 |= (2 << 15);
     // 设置24MHz出来后的倍频
     CCM_ANALOG->PLL_VIDEO &= ~(0x3F << 0);
-    CCM_ANALOG->PLL_VIDEO |= (loopDiv << 0)
+    CCM_ANALOG->PLL_VIDEO |= (loopDiv << 0);
     // 前分频器 CSCDR2[LCDIF1_PRED] i
     CCM->CSCDR2 &= ~(7 << 12);
     CCM->CSCDR2 |= ((preDiv - 1) << 12);

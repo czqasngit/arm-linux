@@ -37,4 +37,7 @@ void LCD_IO_Init();
 void LCD_Open_Background_Light();
 void LCD_Soft_Reset();
 void LCD_Soft_Reset_Complete();
+void LCD_Enable();
+void LCD_Disable();
+void LCD_Register_Config();
 #endif
