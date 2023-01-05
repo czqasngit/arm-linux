@@ -20,7 +20,7 @@ void LCD_Init() {
     LCD_Register_Config();
     LCD_Enable();
     HightPrecisionDelayMS(10);
-    LCD_Clean_Screen(0x00FF0000);
+    LCD_Clean_Screen(0x00FFFFFF);
 }
 /* 根据device id(正点原子开发板特有的数据),其它开发板直接根据屏幕给定的参数来初始化LCD即可 */
 void LCD_Init_Device_Info() {

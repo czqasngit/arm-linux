@@ -24,8 +24,15 @@ int main(void)
     Delay_Init();
     LCD_Init();
     while (1) {
-        HightPrecisionDelayMS(500);
-        printf("while exec \r\n");
+        LCD_DrawPoint(0, 0, 0x00FF0000);
+        LCD_DrawPoint(799, 0, 0x00FF0000);
+        LCD_DrawPoint(0, 479, 0x00FF0000);
+        LCD_DrawPoint(799, 479, 0x00FF0000);
+        HightPrecisionDelayMS(5000);
+        printf("Left Top %#x \r\n", LCD_GetPointColor(0, 0));
+        printf("Right Top %#x \r\n", LCD_GetPointColor(799, 0));
+        printf("Left Bottom %#x \r\n", LCD_GetPointColor(0, 479));
+        printf("Right Bottom %#x \r\n", LCD_GetPointColor(799, 479));
     }
 
     return 0;
