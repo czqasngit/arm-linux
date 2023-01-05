@@ -98,20 +98,31 @@ void Clk_Uart_Init() {
 void Clk_LCD_Init(unsigned char loopDiv, unsigned char preDiv, unsigned char podf) {
     /// LCD的计算公式里面涉及到两个寄存器用于控制小数部分的计算, 这里不使用小数，分母是1,分子是0
     CCM_ANALOG->PLL_VIDEO_NUM = 0;
-    CCM_ANALOG->PLL_VIDEO_DENOM = 1; 
-    // 使能这个PLL输出(启用它)
+    CCM_ANALOG->PLL_VIDEO_DENOM = 0; 
+    // // 使能这个PLL输出(启用它)
+    CCM_ANALOG->PLL_VIDEO = 0;
     CCM_ANALOG->PLL_VIDEO |= (1 << 13);
-    /// 设置成一分频 PLL_VIDEOn[POST_DIV_SELECT]
+    // /// 设置成一分频 PLL_VIDEOn[POST_DIV_SELECT]
     CCM_ANALOG->PLL_VIDEO &= ~(3 << 19);
     CCM_ANALOG->PLL_VIDEO |= (2 << 19);
+
+    	/*
+     * PLL_VIDEO寄存器设置
+     * bit[13]:    1   使能VIDEO PLL时钟
+     * bit[20:19]  2  设置postDivider为1分频
+     * bit[6:0] : 32  设置loopDivider寄存器
+	 */
+	// CCM_ANALOG->PLL_VIDEO =  (2 << 19) | (1 << 13) | (loopDiv << 0); 
+
+
     // 设置成一分频 CCM_ANALOG_MISC2n[VIDEO_DIV]
     CCM_ANALOG->MISC2 &= ~(3 << 30);
-    CCM_ANALOG->MISC2 |= (2 << 30);
+    CCM_ANALOG->MISC2 = (0 << 30);
     // 多路选择器,选择PLL5 CSCDR2[LCDIF1_PRE_CLK_SEL]
     CCM->CSCDR2 &= ~(7 << 15);
     CCM->CSCDR2 |= (2 << 15);
     // 设置24MHz出来后的倍频
-    CCM_ANALOG->PLL_VIDEO &= ~(0x3F << 0);
+    CCM_ANALOG->PLL_VIDEO &= ~(0x7F << 0);
     CCM_ANALOG->PLL_VIDEO |= (loopDiv << 0);
     // 前分频器 CSCDR2[LCDIF1_PRED] i
     CCM->CSCDR2 &= ~(7 << 12);
@@ -122,4 +133,5 @@ void Clk_LCD_Init(unsigned char loopDiv, unsigned char preDiv, unsigned char pod
     // CSCDR2[LCDIF1_CLK_SEL](11:9)
     // 000 derive clock from divided pre-muxed LCDIF1 clock
     CCM->CSCDR2 &= ~(7 << 9);
+    CCM->CSCDR2 |= (0 << 9);
 }

@@ -11,6 +11,7 @@
 
 int main(void)
 {
+    printf("main function start \r\n");
     /// 初始化中断服务函数
     Init_Interrupt();
     Clk_Freq_Init();
@@ -24,6 +25,7 @@ int main(void)
     LCD_Init();
     while (1) {
         HightPrecisionDelayMS(500);
+        printf("while exec \r\n");
     }
 
     return 0;

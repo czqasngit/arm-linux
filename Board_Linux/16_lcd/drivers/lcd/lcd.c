@@ -16,13 +16,11 @@ void LCD_Init() {
     LCD_Soft_Reset();
     HightPrecisionDelayMS(10);
     LCD_Soft_Reset_Complete();
-    /// 配置LCD所需要的时钟频率,通过频率参数推断出来的满足刷新刷新60PFS的最小频率参数
-    Clk_LCD_Init(42, 4, 8);
     /// 配置LCD相关的寄存器参数
     LCD_Register_Config();
     LCD_Enable();
-    HightPrecisionDelayMS(20);
-    LCD_Clean_Screen(0x00FFFFFF);
+    HightPrecisionDelayMS(10);
+    LCD_Clean_Screen(0x00FF0000);
 }
 /* 根据device id(正点原子开发板特有的数据),其它开发板直接根据屏幕给定的参数来初始化LCD即可 */
 void LCD_Init_Device_Info() {
@@ -48,6 +46,7 @@ void LCD_Init_Device_Info() {
         lcd_device_info.vfp = 13;
         /// (VSPW+VBP+LINE+VFP) * (HSPW + HBP + HOZVAL + HFP)
         Clk_LCD_Init(42, 4, 8);
+        printf("lcd_device_info config completed \r\n");
     }/* else if(lcdDevicdID == ATK7084) {
         lcd_device_info.width = 800;
         lcd_device_info.height = 480;
@@ -196,9 +195,11 @@ void LCD_Open_Background_Light() {
 }
 
 void LCD_Soft_Reset() {
+    LCDIF->CTRL = 0;
     LCDIF->CTRL |= 1 << 31;
 }
 void LCD_Soft_Reset_Complete() {
+    LCDIF->CTRL = 0;
     LCDIF->CTRL &= ~(1 << 31);
 }
 void LCD_Enable() {
@@ -211,7 +212,7 @@ void LCD_Disable() {
 void LCD_Register_Config() {
 
     /// 首先将寄存器清0
-    LCDIF->CTRL = 0;
+    // LCDIF->CTRL = 0;
     /*
         bit:1, 这里设置成0,寄存器清空不作处理
         Used only when WORD_LENGTH = 3, i.e. 24-bit. Note that this applies to both packed and unpacked 24- bit data.
@@ -236,11 +237,15 @@ void LCD_Register_Config() {
     LCDIF->CTRL |= (3 << 10);
     LCDIF->CTRL |= (1 << 17);
     LCDIF->CTRL |= (1 << 19);
+    LCDIF->CTRL |= (0 << 14);
+    LCDIF->CTRL |= (0 << 12);
+    LCDIF->CTRL |= (0 << 1);
 
     /*
         bit 19:16 设置4个字节中的哪几个字节是有效的传输位,这里使用的是ARGB一个32位(4字节来表示一个颜色)，A不传输,RGB表示低3位0111，所以值设置成7
     */
-    LCDIF->CTRL1 &= ~(7 << 16);
+    LCDIF->CTRL1 &= ~(15 << 16);
+    LCDIF->CTRL1 |= (7 << 16);
 
     /*
         bit 15:0    屏幕宽
@@ -265,6 +270,7 @@ void LCD_Register_Config() {
     LCDIF->VDCTRL0 |= (1 << 20);
     LCDIF->VDCTRL0 |= (1 << 21);
     LCDIF->VDCTRL0 |= (1 << 24); 
+    LCDIF->VDCTRL0 |= (1 << 28);
 
     /*
         VSYNC的总信号,在前面的V-Sync里面已经将单位设置成了完整的一行水平宽为一个单位
@@ -337,5 +343,5 @@ void LCD_Clean_Screen(unsigned int color) {
     for(unsigned int i = 0; i < size; i ++) {
         // 给每个像素点都写入color
         p_start[i] = color;
-    }
+    }	
 }
