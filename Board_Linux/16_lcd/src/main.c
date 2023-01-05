@@ -8,6 +8,7 @@
 #include "uart.h"
 #include "stdio.h"
 #include "lcd.h"
+#include "lcdapi.h"
 
 int main(void)
 {
@@ -23,16 +24,19 @@ int main(void)
     // Epit_Init(500);
     Delay_Init();
     LCD_Init();
+
+    lcd_show_string(50, 50, 260, 32, 32, "Hello LCD Screen");
+
     while (1) {
-        LCD_DrawPoint(0, 0, 0x00FF0000);
-        LCD_DrawPoint(799, 0, 0x00FF0000);
-        LCD_DrawPoint(0, 479, 0x00FF0000);
-        LCD_DrawPoint(799, 479, 0x00FF0000);
-        HightPrecisionDelayMS(5000);
-        printf("Left Top %#x \r\n", LCD_GetPointColor(0, 0));
-        printf("Right Top %#x \r\n", LCD_GetPointColor(799, 0));
-        printf("Left Bottom %#x \r\n", LCD_GetPointColor(0, 479));
-        printf("Right Bottom %#x \r\n", LCD_GetPointColor(799, 479));
+        // LCD_DrawPoint(0, 0, 0x00FF0000);
+        // LCD_DrawPoint(799, 0, 0x00FF0000);
+        // LCD_DrawPoint(0, 479, 0x00FF0000);
+        // LCD_DrawPoint(799, 479, 0x00FF0000);
+        // HightPrecisionDelayMS(5000);
+        // printf("Left Top %#x \r\n", LCD_GetPointColor(0, 0));
+        // printf("Right Top %#x \r\n", LCD_GetPointColor(799, 0));
+        // printf("Left Bottom %#x \r\n", LCD_GetPointColor(0, 479));
+        // printf("Right Bottom %#x \r\n", LCD_GetPointColor(799, 479));
     }
 
     return 0;
