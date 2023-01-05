@@ -21,6 +21,8 @@ void LCD_Init() {
     /// 配置LCD相关的寄存器参数
     LCD_Register_Config();
     LCD_Enable();
+    HightPrecisionDelayMS(20);
+    LCD_Clean_Screen(0x00FFFFFF);
 }
 /* 根据device id(正点原子开发板特有的数据),其它开发板直接根据屏幕给定的参数来初始化LCD即可 */
 void LCD_Init_Device_Info() {
@@ -299,4 +301,41 @@ void LCD_Register_Config() {
     LCDIF->CUR_BUF = lcd_device_info.frameBuffer;
     /* 下一帧显存起始地址 */
     LCDIF->NEXT_BUF = lcd_device_info.frameBuffer;
+}
+
+
+void LCD_DrawPoint(unsigned short x, unsigned short y, unsigned int color) {
+    // 显存存起始地址
+    unsigned int lcdFrameBufferAddr = lcd_device_info.frameBuffer;
+    // 显存绘制点偏移地址
+    unsigned int offset = (lcd_device_info.width * y + x) * lcd_device_info.byte_per_pixel;
+    // 需要绘制的点的偏移地址
+    unsigned int drawPointAddr = lcdFrameBufferAddr + offset;
+    // 直接将这个地址赋值给一个指针,使用指针即可访问到对应的内存地址
+    unsigned int *drawPointPointer = (unsigned int *)drawPointAddr;
+    // 给指针指向的内存写入一个颜色
+    *drawPointPointer = color;
+}
+
+unsigned int LCD_GetPointColor(unsigned short x, unsigned short y) {
+    // 显存存起始地址
+    unsigned int lcdFrameBufferAddr = lcd_device_info.frameBuffer;
+    // 显存绘制点偏移地址
+    unsigned int offset = (lcd_device_info.width * y + x) * lcd_device_info.byte_per_pixel;
+    // 需要绘制的点的偏移地址
+    unsigned int drawPointAddr = lcdFrameBufferAddr + offset;
+    // 直接将这个地址赋值给一个指针,使用指针即可访问到对应的内存地址
+    unsigned int *drawPointPointer = (unsigned int *)drawPointAddr;
+    return *drawPointPointer;
+}
+// 清屏幕
+void LCD_Clean_Screen(unsigned int color) {
+    // 使用unsigned int *类型去读取显存
+    unsigned int *p_start = (unsigned int *)lcd_device_info.frameBuffer;
+    // 得到总共有多少像素点
+    unsigned int size = lcd_device_info.width * lcd_device_info.height;
+    for(unsigned int i = 0; i < size; i ++) {
+        // 给每个像素点都写入color
+        p_start[i] = color;
+    }
 }

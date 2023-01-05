@@ -40,4 +40,7 @@ void LCD_Soft_Reset_Complete();
 void LCD_Enable();
 void LCD_Disable();
 void LCD_Register_Config();
+void LCD_DrawPoint(unsigned short x, unsigned short y, unsigned int color);
+unsigned int LCD_GetPointColor(unsigned short x, unsigned short y);
+void LCD_Clean_Screen(unsigned int color);
 #endif
