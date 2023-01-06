@@ -13,6 +13,8 @@ void RTC_Init() {
     date_time.minute = 0;
     date_time.second = 0;
     RTC_Set(date_time);
+
+    RTC_Enable();
 }
 
 void RTC_Enable() { 
