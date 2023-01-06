@@ -9,6 +9,7 @@
 #include "stdio.h"
 #include "lcd.h"
 #include "lcdapi.h"
+#include "rtc.h"
 
 int main(void)
 {
@@ -24,19 +25,16 @@ int main(void)
     // Epit_Init(500);
     Delay_Init();
     LCD_Init();
-
+    RTC_Init();
     lcd_show_string(50, 50, 260, 32, 32, "Hello LCD Screen");
 
     while (1) {
-        // LCD_DrawPoint(0, 0, 0x00FF0000);
-        // LCD_DrawPoint(799, 0, 0x00FF0000);
-        // LCD_DrawPoint(0, 479, 0x00FF0000);
-        // LCD_DrawPoint(799, 479, 0x00FF0000);
-        // HightPrecisionDelayMS(5000);
-        // printf("Left Top %#x \r\n", LCD_GetPointColor(0, 0));
-        // printf("Right Top %#x \r\n", LCD_GetPointColor(799, 0));
-        // printf("Left Bottom %#x \r\n", LCD_GetPointColor(0, 479));
-        // printf("Right Bottom %#x \r\n", LCD_GetPointColor(799, 479));
+        Led_On();
+        HightPrecisionDelayMS(500);
+        Led_Off();
+        HightPrecisionDelayMS(500);
+        RTC_DATET_TIME date_time = RTC_GetDateTime();
+        printf("时间: %d-%d-%d %d:%d:%d\r\n", date_time.year, date_time.month, date_time.day, date_time.hour, date_time.minute, date_time.second);
     }
 
     return 0;

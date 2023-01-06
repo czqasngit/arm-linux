@@ -22,6 +22,7 @@ INCLUDE_DIRS 	:= 	common \
 					drivers/epit \
 					drivers/uart \
 					drivers/lcd \
+					drivers/rtc \
 					libs/delay \
 					libs/stdio/include
 #源文件目录
@@ -35,6 +36,7 @@ SRC_DIRS 		:= 	src \
 					drivers/epit \
 					drivers/uart \
 					drivers/lcd \
+					drivers/rtc \
 					libs/delay \
 					libs/stdio/lib
 
@@ -77,6 +79,8 @@ install:
 	make clean
 	make
 	gcc -w ./tools/imxdownload.c -o ./tools/imxdownload
+run:
+	make install -j12
 
 write:
 	./tools/imxdownload ./product/$(TARGET).bin /dev/sdb
