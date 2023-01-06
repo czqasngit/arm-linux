@@ -1,10 +1,10 @@
 # 编译器前缀
-COMPILER 		:= arm-unknown-linux-gnueabihf-
+COMPILER 		:= arm-linux-gnueabihf-
 # 目录产物名称
 TARGET 			:= rtc
 
-LIBPATH			:= -lgcc -L /Users/youxiaobin/arm-unknown-linux-gnueabihf/lib/gcc/arm-unknown-linux-gnueabihf/8.3.0
-# LIBPATH         := -lgcc -L /usr/local/arm/gcc-linaro-4.9.4-2017.01-x86_64_arm-linux-gnueabihf/lib/gcc/arm-linux-gnueabihf/4.9.4
+# LIBPATH			:= -lgcc -L /Users/youxiaobin/arm-unknown-linux-gnueabihf/lib/gcc/arm-unknown-linux-gnueabihf/8.3.0
+LIBPATH         := -lgcc -L /usr/local/arm/gcc-linaro-4.9.4-2017.01-x86_64_arm-linux-gnueabihf/lib/gcc/arm-linux-gnueabihf/4.9.4
 CC 				:= $(COMPILER)gcc
 LD          	:= $(COMPILER)ld
 COPY     		:= $(COMPILER)objcopy
