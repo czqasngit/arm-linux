@@ -24,9 +24,11 @@ int main(void)
     // Epit_Init(500);
     Delay_Init();
     LCD_Init();
-
-    lcd_show_string(50, 50, 260, 32, 32, "Hello LCD Screen");
-
+    lcd_device_info.foreColor = 0x00FF0000;
+    lcd_device_info.backColor = 0x00FFFFFF;
+    lcd_show_string(50, 50, 260, 32, 32, "Hello I.MX6ULL");
+    lcd_show_string(50, 90, 260, 24, 24, "ARM ON Linux");
+    lcd_show_string(50, 130, 260, 24, 24, "Write Using C Language");
     while (1) {
         // LCD_DrawPoint(0, 0, 0x00FF0000);
         // LCD_DrawPoint(799, 0, 0x00FF0000);
@@ -37,6 +39,10 @@ int main(void)
         // printf("Right Top %#x \r\n", LCD_GetPointColor(799, 0));
         // printf("Left Bottom %#x \r\n", LCD_GetPointColor(0, 479));
         // printf("Right Bottom %#x \r\n", LCD_GetPointColor(799, 479));
+        Led_On();
+        HightPrecisionDelayMS(300);
+        Led_Off();
+        HightPrecisionDelayMS(300);
     }
 
     return 0;

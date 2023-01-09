@@ -26,16 +26,32 @@ int main(void)
     Delay_Init();
     LCD_Init();
     RTC_Init();
-    lcd_show_string(50, 50, 260, 32, 32, "Hello LCD Screen");
 
+    lcd_device_info.foreColor = 0x00FF0000;
+    lcd_device_info.backColor = 0x00FFFFFF;
+    
+    lcd_show_string(50, 50, 260, 32, 32, "Hello I.MX6ULL");
+    lcd_show_string(50, 90, 260, 24, 24, "ARM ON Linux");
+    lcd_show_string(50, 130, 260, 24, 24, "Write Using C Language");
+
+    char buffer[1024];
     while (1) {
         Led_On();
         HightPrecisionDelayMS(500);
         Led_Off();
         HightPrecisionDelayMS(500);
+        // LCD_Clean_Screen(0x00FFFFFFFF);
+        
+        memcpy(buffer, 0, 1024);
         RTC_DATET_TIME date_time = RTC_GetDateTime();
-        printf("时间: %d-%d-%d %d:%d:%d\r\n", date_time.year, date_time.month, date_time.day, date_time.hour, date_time.minute, date_time.second);
+        printf("时间: %d-%02d-%02d %02d:%02d:%02d\r\n", date_time.year, date_time.month, date_time.day, date_time.hour, date_time.minute, date_time.second);
+        sprintf(buffer, "%d-%02d-%02d %02d:%02d:%02d", date_time.year, date_time.month, date_time.day, date_time.hour, date_time.minute, date_time.second);
+        printf("%s \r\n", buffer);
+        lcd_show_string(50, 170, 360, 24, 24, buffer);
     }
+
+
+
 
     return 0;
 }

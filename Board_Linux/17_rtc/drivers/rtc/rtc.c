@@ -1,5 +1,7 @@
 #include "rtc.h"
 #include "MCIMX6Y2.h"
+#include "delay.h"
+#include "stdio.h"
 
 void RTC_Init() {
     // 设置成所有的软件都可以访问RTC寄存器
@@ -23,7 +25,7 @@ void RTC_Enable() {
     while((SNVS->LPCR & 0x1) == 0);
 }
 void RTC_Disable() {  
-    SNVS->LPCR |= (0 << 0);
+    SNVS->LPCR &= ~(1 << 0);
     /// 等待设置完成
     while((SNVS->LPCR & 0x1) == 1);
 }
