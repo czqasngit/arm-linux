@@ -1,0 +1,24 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+    ],
+    "settings": {
+        "files.associations": {
+            "pod_push": "shellscript",
+            "imx6ul.h": "c",
+            "beep.h": "c",
+            "core_ca7.h": "c",
+            "interrupt.h": "c",
+            "fsl_common.h": "c",
+            "fsl_iomuxc.h": "c",
+            "delay.h": "c",
+            "rtc.h": "c",
+            "i2c.h": "c",
+            "lcdapi.h": "c",
+            "lcd.h": "c",
+            "mcimx6y2.h": "c"
+        }
+    }
+}
