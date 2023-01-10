@@ -111,7 +111,7 @@ void I2C_Master_Send(I2C_Type *i2c, unsigned char *buffer, unsigned int size) {
 }
 
 // 接受数据
-void I2C_Master_Receive(I2C_Type *i2c, unsigned int *buffer, unsigned int size) {
+void I2C_Master_Receive(I2C_Type *i2c, unsigned char *buffer, unsigned int size) {
     // I2SR的bit7: 0表示当前I2C正在发送数据, 1表示发送完成
     // 等待上一个数据发送完成
     while((((i2c->I2SR) >> 7) & 0x1) == 0);
@@ -149,68 +149,51 @@ void I2C_Master_Receive(I2C_Type *i2c, unsigned int *buffer, unsigned int size) 
  * @param - xfer: 传输结构体
  * @return 		: 传输结果,0 成功，其他值 失败;
  */
-unsigned char i2c_master_transfer(I2C_Type *base, struct i2c_transfer *xfer)
-{
+char I2C_Master_Transfer(I2C_Type *base, struct i2c_transfer *xfer) {
 	unsigned char ret = 0;
     I2CDirection direction = xfer->direction;	
-
 	base->I2SR &= ~((1 << 1) | (1 << 4));			/* 清除标志位 */
-
 	/* 等待传输完成 */
-	while(!((base->I2SR >> 7) & 0X1)){}; 
-
+	while(!((base->I2SR >> 7) & 0X1)); 
+    /* 读取I2C从机设备寄存器数据 */
 	/* 如果是读的话，要先发送寄存器地址，所以要先将方向改为写 */
-    if ((xfer->subaddressSize > 0) && (xfer->direction == I2CDirection_READ))
-    {
+    if ((xfer->subaddressSize > 0) && (xfer->direction == I2CDirection_READ)) {
         direction = I2CDirection_WRITE;
     }
-
 	ret = I2C_Master_Start(base, xfer->slaveAddress, direction); /* 发送开始信号 */
-    if(ret)
-    {	
+    if(ret) {	
 		return ret;
 	}
-
-	while(!(base->I2SR & (1 << 1))){};			/* 等待传输完成 */
-
+	while(!(base->I2SR & (1 << 1)));			/* 等待传输完成 */
     ret = I2C_Check_And_Error_Clean(base, base->I2SR);	/* 检查是否出现传输错误 */
-    if(ret)
-    {
+    if(ret) {
       	I2C_Master_Stop(base); 						/* 发送出错，发送停止信号 */
         return ret;
     }
 	
-    /* 发送寄存器地址 */
-    if(xfer->subaddressSize)
-    {
-        do
-        {
+    /* 发送寄存器地址, */
+    if(xfer->subaddressSize) {
+        do {
 			base->I2SR &= ~(1 << 1);			/* 清除标志位 */
             xfer->subaddressSize--;				/* 地址长度减一 */
-			
             base->I2DR =  ((xfer->subaddress) >> (8 * xfer->subaddressSize)); //向I2DR寄存器写入子地址
-  
 			while(!(base->I2SR & (1 << 1)));  	/* 等待传输完成 */
-
             /* 检查是否有错误发生 */
             ret = I2C_Check_And_Error_Clean(base, base->I2SR);
-            if(ret)
-            {
+            if(ret) {
              	I2C_Master_Stop(base); 				/* 发送停止信号 */
              	return ret;
             }  
         } while ((xfer->subaddressSize > 0) && (ret == I2CStatus_OK));
 
-        if(xfer->direction == I2CDirection_READ) 		/* 读取数据 */
-        {
+        if(xfer->direction == I2CDirection_READ) { 		/* 读取数据 */
             base->I2SR &= ~(1 << 1);			/* 清除中断挂起位 */
-            I2C_Master_Start(base, xfer->slaveAddress, I2CDirection_READ); /* 发送重复开始信号和从机地址 */
+            I2C_Restart(base, xfer->slaveAddress, I2CDirection_READ); /* 发送重复开始信号和从机地址 */
     		while(!(base->I2SR & (1 << 1))){};/* 等待传输完成 */
 
             /* 检查是否有错误发生 */
 			ret = I2C_Check_And_Error_Clean(base, base->I2SR);
-            if(ret)
-            {
+            if(ret) {
              	ret = I2CStatus_ACK;
                 I2C_Master_Stop(base); 		/* 发送停止信号 */
                 return ret;  
@@ -218,8 +201,6 @@ unsigned char i2c_master_transfer(I2C_Type *base, struct i2c_transfer *xfer)
            	          
         }
     }	
-
-
     /* 发送数据 */
     if ((xfer->direction == I2CDirection_WRITE) && (xfer->dataSize > 0)) {
     	I2C_Master_Send(base, xfer->data, xfer->dataSize);

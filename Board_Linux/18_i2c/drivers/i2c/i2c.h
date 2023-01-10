@@ -47,4 +47,6 @@ char I2C_Master_Stop(I2C_Type *i2c);
 char I2C_Restart(I2C_Type *i2c, unsigned int slave_addr, I2CDirection direction);
 char I2C_Check_And_Error_Clean(I2C_Type *i2c, unsigned int state);
 void I2C_Master_Send(I2C_Type *i2c, unsigned char *buffer, unsigned int size);
+void I2C_Master_Receive(I2C_Type *i2c, unsigned char *buffer, unsigned int size);
+char I2C_Master_Transfer(I2C_Type *base, struct i2c_transfer *xfer);
 #endif
