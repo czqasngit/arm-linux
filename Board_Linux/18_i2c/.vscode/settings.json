@@ -11,7 +11,8 @@
     "rtc.h": "c",
     "i2c.h": "c",
     "lcdapi.h": "c",
-    "lcd.h": "c"
+    "lcd.h": "c",
+    "bsp_i2c.h": "c"
 },
   "C_Cpp.errorSquiggles": "disabled",
   "editor.clang_format_style": "file",
