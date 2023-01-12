@@ -125,6 +125,7 @@ void I2C_Master_Receive(I2C_Type *i2c, unsigned char *buffer, unsigned int size)
     if(size == 1) {
         i2c->I2CR |= (1 << 3);
     }
+    int dummy = i2c->I2DR;// 假读
     while (size) {
         // 开始接受数据
         // 等待数据接受完成
