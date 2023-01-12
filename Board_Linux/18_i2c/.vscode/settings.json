@@ -12,7 +12,8 @@
     "i2c.h": "c",
     "lcdapi.h": "c",
     "lcd.h": "c",
-    "bsp_i2c.h": "c"
+    "bsp_i2c.h": "c",
+    "mcimx6y2.h": "c"
 },
   "C_Cpp.errorSquiggles": "disabled",
   "editor.clang_format_style": "file",

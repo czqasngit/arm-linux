@@ -15,5 +15,6 @@
 
 
 void AP3216C_Init();
-
+unsigned char AP3216C_ReadOneByte(unsigned int slaveAddress, unsigned char register);
+unsigned char AP3216C_WriteOneByte(unsigned int slaveAddress, unsigned char register, unsigned char data);
 #endif
