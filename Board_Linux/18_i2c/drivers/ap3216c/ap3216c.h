@@ -14,8 +14,8 @@
 #define AP3216C_PS_DATA_HIGH                    0X0F
 
 void AP3216C_Init();
-unsigned char AP3216C_ReadOneByte(unsigned int slaveAddress, unsigned char register);
-unsigned char AP3216C_WriteOneByte(unsigned int slaveAddress, unsigned char register, unsigned char data);
+unsigned char AP3216C_ReadOneByte(unsigned int slaveAddress, unsigned char reg);
+unsigned char AP3216C_WriteOneByte(unsigned int slaveAddress, unsigned char reg, unsigned char data);
 // 读取传感器数据
 void AP3216C_ReadData(unsigned short *ir, unsigned short *als, unsigned short *ps);
 #endif

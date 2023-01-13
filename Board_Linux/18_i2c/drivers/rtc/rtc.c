@@ -23,7 +23,7 @@ void RTC_Enable() {
     while((SNVS->LPCR & 0x1) == 0);
 }
 void RTC_Disable() {  
-    SNVS->LPCR |= (0 << 0);
+    SNVS->LPCR &= ~(1 << 0);
     /// 等待设置完成
     while((SNVS->LPCR & 0x1) == 1);
 }

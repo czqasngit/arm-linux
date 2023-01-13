@@ -17,8 +17,9 @@ void Delay(volatile unsigned int n)
 }
 
 void Delay_Init() {
+    GPT1->CR = 0;
     /* 复位GPT定时器, bit15写入1复位*/
-    GPT1->CR |= 1 << 15;
+    GPT1->CR = 1 << 15;
     /* 等待复位完成,复位完成后bit15的值是0 */
     while ((GPT1->CR >> 15) & 0x1);
     /// bit0:11
@@ -45,24 +46,21 @@ void HighPrecisionDelayNS(unsigned int us)
 
     unsigned int lastCNTValue = GPT1->CNT;
     unsigned int totalCNTValue = 0;
-    while (1)
+    while(1)
     {
         unsigned int cntValue = GPT1->CNT;
-        if (cntValue > lastCNTValue)
-        {
-            /// 计数器向上递增,如果当前的值大于上一次的值,表示没有溢出
-            /// 总共计数累加
-            totalCNTValue += cntValue - lastCNTValue;
-        }
-        else
-        {
+        if (cntValue >= lastCNTValue) {
+        /// 计数器向上递增,如果当前的值大于上一次的值,表示没有溢出
+        /// 总共计数累加
+        totalCNTValue += cntValue - lastCNTValue;
+        } else {
             /// 溢出了
             totalCNTValue += 0xFFFFFFFF - lastCNTValue;
             totalCNTValue += cntValue;
         }
         lastCNTValue = cntValue;
         /// 如果总计数已经大于给定的数据,则退出表示延时完成
-        if (totalCNTValue > us)
+        if (totalCNTValue >= us)
             break;
     }
 }
