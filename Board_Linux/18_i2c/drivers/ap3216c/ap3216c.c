@@ -4,6 +4,7 @@
 #include "i2c.h"
 #include "delay.h"
 #include "stdio.h"
+#include "stdio.h"
 
 void AP3216C_Init() {
     // 引脚复用
@@ -47,4 +48,26 @@ unsigned char AP3216C_WriteOneByte(unsigned int slaveAddress, unsigned char regi
     xfer.data = &value;
     xfer.dataSize = 1;
     return I2C_Master_Transfer(I2C1, &xfer);
+}
+
+void AP3216C_ReadData(unsigned short *ir, unsigned short *als, unsigned short *ps) {
+
+    unsigned char irDataLow = AP3216C_ReadOneByte(AP3216C_ADDR, AP3216C_IR_DATA_LOW);
+    unsigned char irDataHigh = AP3216C_ReadOneByte(AP3216C_ADDR, AP3216C_IR_DATA_HIGH);
+
+    unsigned char alsDataLow = AP3216C_ReadOneByte(AP3216C_ADDR, AP3216C_ALS_DATA_LOW);
+    unsigned char alsDataHigh = AP3216C_ReadOneByte(AP3216C_ADDR, AP3216C_ALS_DATA_HIGH);
+
+    unsigned char psDataLow = AP3216C_ReadOneByte(AP3216C_ADDR, AP3216C_PS_DATA_LOW);
+    unsigned char psDataHigh = AP3216C_ReadOneByte(AP3216C_ADDR, AP3216C_PS_DATA_HIGH);
+
+    // 判断ir与ps是否有效
+    char ir_ps_valid = (irDataLow >> 8) & 0x01;
+    if(ir_ps_valid) {
+        printf("IR and PS unvalid \r\n");
+    } else {
+        *ir = (((unsigned short)irDataHigh) << 2) | (irDataLow & 0x3);
+        *ps = (((unsigned short)psDataHigh & 0x3F)) << 6 | (psDataLow & 0xF);
+    }
+    *als = ((unsigned short)alsDataHigh) << 8) | alsDataLow;
 }

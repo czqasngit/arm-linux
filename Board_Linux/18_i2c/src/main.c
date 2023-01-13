@@ -11,6 +11,7 @@
 #include "lcdapi.h"
 #include "rtc.h"
 #include "i2c.h"
+#include "ap3216c.h"
 
 int main(void)
 {
@@ -27,6 +28,7 @@ int main(void)
     Delay_Init();
     LCD_Init();
     RTC_Init();
+    AP3216C_Init()
     lcd_show_string(50, 50, 260, 32, 32, "Hello LCD Screen");
 
     while (1) {
