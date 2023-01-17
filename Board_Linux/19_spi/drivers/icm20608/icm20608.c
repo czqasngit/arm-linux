@@ -68,6 +68,61 @@ void icm20608_reg_init() {
 	icm20608_write(ICM20_LP_MODE_CFG, 0x00); 	/* 关闭低功耗 						*/
 	icm20608_write(ICM20_FIFO_EN, 0x00);		/* 关闭FIFO						*/
 }
+/*
+ * @description : 获取陀螺仪的分辨率
+ * @param		: 无
+ * @return		: 获取到的分辨率
+ */
+float icm20608_gyro_scaleget(void)
+{
+	unsigned char data;
+	float gyroscale;
+	
+	data = (icm20608_read(ICM20_GYRO_CONFIG) >> 3) & 0X3;
+	switch(data) {
+		case 0: 
+			gyroscale = 131;
+			break;
+		case 1:
+			gyroscale = 65.5;
+			break;
+		case 2:
+			gyroscale = 32.8;
+			break;
+		case 3:
+			gyroscale = 16.4;
+			break;
+	}
+	return gyroscale;
+}
+
+/*
+ * @description : 获取加速度计的分辨率
+ * @param		: 无
+ * @return		: 获取到的分辨率
+ */
+unsigned short icm20608_accel_scaleget(void)
+{
+	unsigned char data;
+	unsigned short accelscale;
+	
+	data = (icm20608_read(ICM20_ACCEL_CONFIG) >> 3) & 0X3;
+	switch(data) {
+		case 0: 
+			accelscale = 16384;
+			break;
+		case 1:
+			accelscale = 8192;
+			break;
+		case 2:
+			accelscale = 4096;
+			break;
+		case 3:
+			accelscale = 2048;
+			break;
+	}
+	return accelscale;
+}
 
 icm20608 icm20608_readdata() {
     ICM_CS_SELECTED(0);
@@ -76,6 +131,8 @@ icm20608 icm20608_readdata() {
         spi_write(ECSPI3, ICM20_ACCEL_XOUT_H + i);
         data[i] = spi_read(ECSPI3);
     }
+    u16 gyroscale = icm20608_gyro_scaleget();
+    u16 accescale = icm20608_accel_scaleget();
     ICM_CS_SELECTED(1);
     icm20608 icm20608_dev;
     icm20608_dev.accel_x_adc = (signed short)((data[0] << 8) | data[1]); 
@@ -85,6 +142,18 @@ icm20608 icm20608_readdata() {
 	icm20608_dev.gyro_x_adc  = (signed short)((data[8] << 8) | data[9]); 
 	icm20608_dev.gyro_y_adc  = (signed short)((data[10] << 8) | data[11]);
 	icm20608_dev.gyro_z_adc  = (signed short)((data[12] << 8) | data[13]);
+
+    /* 计算实际值 */
+	icm20608_dev.gyro_x_act = ((float)(icm20608_dev.gyro_x_adc)  / gyroscale) * 100;
+	icm20608_dev.gyro_y_act = ((float)(icm20608_dev.gyro_y_adc)  / gyroscale) * 100;
+	icm20608_dev.gyro_z_act = ((float)(icm20608_dev.gyro_z_adc)  / gyroscale) * 100;
+
+	icm20608_dev.accel_x_act = ((float)(icm20608_dev.accel_x_adc) / accescale) * 100;
+	icm20608_dev.accel_y_act = ((float)(icm20608_dev.accel_y_adc) / accescale) * 100;
+	icm20608_dev.accel_z_act = ((float)(icm20608_dev.accel_z_adc) / accescale) * 100;
+
+	icm20608_dev.temp_act = (((float)(icm20608_dev.temp_adc) - 25 ) / 326.8 + 25) * 100;
+
     return icm20608_dev;
 }
 

@@ -80,7 +80,7 @@ $(SOBJS) : obj/%.o : %.s
 	$(CC) -Wall -nostdlib -fno-builtin -O2  $(INCLUDE) -c $< -o $@ 
 
 $(COBJS) : obj/%.o : %.c
-	$(CC) -Wall -Wa,-mimplicit-it=thumb -nostdlib -fno-builtin -O2 --std=gnu99  $(INCLUDE) -c $< -o $@ 
+	$(CC) -march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard -Wall -Wa,-mimplicit-it=thumb -nostdlib -fno-builtin -O2 --std=gnu99  $(INCLUDE) -c $< -o $@ 
 
 
 install:

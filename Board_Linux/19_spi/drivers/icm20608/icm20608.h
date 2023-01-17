@@ -99,6 +99,8 @@ void icm20608_init();
 u8 icm20608_read(u8 reg);
 void icm20608_write(u8 reg, u8 data);
 void icm20608_reg_init();
+u16 icm20608_accel_scaleget(void);
+float icm20608_gyro_scaleget(void);
 icm20608 icm20608_readdata();
 void icm20608_test();
 #endif
