@@ -38,9 +38,9 @@ int main(void)
     char buffer[1024];
     while (1) {
         Led_On();
-        HightPrecisionDelayMS(500);
+        HightPrecisionDelayMS(50);
         Led_Off();
-        HightPrecisionDelayMS(500);
+        HightPrecisionDelayMS(50);
         // LCD_Clean_Screen(0x00FFFFFFFF);
         
         memcpy(buffer, 0, 1024);
@@ -53,7 +53,7 @@ int main(void)
         unsigned short als = 0;
         unsigned short ps = 0;
         AP3216C_ReadData(&lr, &als, &ps);
-        printf("lr: %d, als: %d, ps: %d \r\n");
+        printf("ir: %d, als: %d, ps: %d \r\n");
     }
 
 

@@ -52,42 +52,28 @@ unsigned char AP3216C_WriteOneByte(unsigned int slaveAddress, unsigned char reg,
 
 void AP3216C_ReadData(unsigned short *ir, unsigned short *als, unsigned short *ps) {
 
-    // unsigned char irDataLow = AP3216C_ReadOneByte(AP3216C_ADDR, AP3216C_IR_DATA_LOW);
-    // unsigned char irDataHigh = AP3216C_ReadOneByte(AP3216C_ADDR, AP3216C_IR_DATA_HIGH);
-
-    // unsigned char alsDataLow = AP3216C_ReadOneByte(AP3216C_ADDR, AP3216C_ALS_DATA_LOW);
-    // unsigned char alsDataHigh = AP3216C_ReadOneByte(AP3216C_ADDR, AP3216C_ALS_DATA_HIGH);
-
-    // unsigned char psDataLow = AP3216C_ReadOneByte(AP3216C_ADDR, AP3216C_PS_DATA_LOW);
-    // unsigned char psDataHigh = AP3216C_ReadOneByte(AP3216C_ADDR, AP3216C_PS_DATA_HIGH);
-
-    // // 判断ir与ps是否有效
-    // char ir_ps_valid = (irDataLow >> 8) & 0x01;
-    // if(ir_ps_valid) {
-    //     printf("IR and PS unvalid \r\n");
-    // } else {
-    //     *ir = (((unsigned short)irDataHigh) << 2) | (irDataLow & 0x3);
-    //     *ps = (((unsigned short)psDataHigh & 0x3F)) << 6 | (psDataLow & 0xF);
-    // }
-    // *als = (((unsigned short)alsDataHigh) << 8) | alsDataLow;
-    unsigned char buf[6];
-    unsigned char i;
-
-	/* 循环读取所有传感器数据 */
-    for(i = 0; i < 6; i++)	
+  
+    unsigned char buf[6] ;
+    for(int i = 0; i < 6; i++)	
     {
-        buf[i] = AP3216C_ReadOneByte(AP3216C_ADDR, AP3216C_PS_DATA_LOW + i);	
+        buf[i] = AP3216C_ReadOneByte(AP3216C_ADDR, AP3216C_IR_DATA_LOW + i);	
     }
-	
-    if(buf[0] & 0X80) 	/* IR_OF位为1,则数据无效 */
-		*ir = 0;					
-	else 				/* 读取IR传感器的数据   		*/
-		*ir = ((unsigned short)buf[1] << 2) | (buf[0] & 0X03); 			
-	
-	*als = ((unsigned short)buf[3] << 8) | buf[2];	/* 读取ALS传感器的数据 			 */  
-	
-    if(buf[4] & 0x40)	/* IR_OF位为1,则数据无效 			*/
-		*ps = 0;    													
-	else 				/* 读取PS传感器的数据    */
-		*ps = ((unsigned short)(buf[5] & 0X3F) << 4) | (buf[4] & 0X0F); 	
+    HightPrecisionDelayMS(1);
+    unsigned char irDataLow = buf[0];
+    unsigned char irDataHigh = buf[1];
+    unsigned char alsDataLow = buf[2];
+    unsigned char alsDataHigh = buf[3];
+    unsigned char psDataLow = buf[4];
+    unsigned char psDataHigh = buf[5];
+
+    // 判断ir与ps是否有效
+    char ir_ps_valid = (irDataLow >> 8) & 0x01;
+    if(ir_ps_valid) {
+        printf("IR and PS unvalid \r\n");
+    } else {
+        // *ir = (((unsigned short)irDataHigh) << 2) | (irDataLow & 0x3);
+        *ir = ((unsigned short)irDataHigh << 2) | (irDataLow & 0X03); 	
+        *ps = (((unsigned short)psDataHigh & 0x3F)) << 4 | (psDataLow & 0xF);
+    }
+    *als = (((unsigned short)alsDataHigh) << 8) | alsDataLow;	
 }
