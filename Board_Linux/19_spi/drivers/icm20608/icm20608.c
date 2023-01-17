@@ -10,6 +10,8 @@ void icm20608_init() {
     icm20608_iomux_init();
     spi_init(ECSPI3);
     icm20608_test();
+    // 初始化icm20608的传感器相关参数
+    icm20608_reg_init();
 }
 
 // 引脚复用
@@ -50,7 +52,18 @@ void icm20608_write(u8 reg, u8 data) {
     ICM_CS_SELECTED(1);
 }
 
+void icm20608_reg_init() {
+    icm20608_write(ICM20_SMPLRT_DIV, 0x00); 	/* 输出速率是内部采样率					*/
+	icm20608_write(ICM20_GYRO_CONFIG, 0x18); 	/* 陀螺仪±2000dps量程 				*/
+	icm20608_write(ICM20_ACCEL_CONFIG, 0x18); 	/* 加速度计±16G量程 					*/
+	icm20608_write(ICM20_CONFIG, 0x04); 		/* 陀螺仪低通滤波BW=20Hz 				*/
+	icm20608_write(ICM20_ACCEL_CONFIG2, 0x04); 	/* 加速度计低通滤波BW=21.2Hz 			*/
+	icm20608_write(ICM20_PWR_MGMT_2, 0x00); 	/* 打开加速度计和陀螺仪所有轴 				*/
+	icm20608_write(ICM20_LP_MODE_CFG, 0x00); 	/* 关闭低功耗 						*/
+	icm20608_write(ICM20_FIFO_EN, 0x00);		/* 关闭FIFO						*/
+}
+
 void icm20608_test() {
     u8 value = icm20608_read(ICM20_WHO_AM_I);
-    printf("ICM20608 who am i : %#x \r\n", value);
+    printf("ICM20608 ID VALUE : %#x \r\n", value);
 }

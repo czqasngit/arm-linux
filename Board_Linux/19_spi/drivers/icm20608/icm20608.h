@@ -79,6 +79,6 @@ void icm20608_iomux_init();
 void icm20608_init();
 u8 icm20608_read(u8 reg);
 void icm20608_write(u8 reg, u8 data);
-
+void icm20608_reg_init();
 void icm20608_test();
 #endif
