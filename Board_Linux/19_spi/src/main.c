@@ -32,6 +32,7 @@
 int main(void)
 {
     printf("main function start \r\n");
+    imx6ul_hardfpu_enable();
     /// 初始化中断服务函数
     Init_Interrupt();
     Clk_Freq_Init();
@@ -44,7 +45,6 @@ int main(void)
     Delay_Init();
     LCD_Init();
     RTC_Init();
-    imx6ul_hardfpu_enable();
     // AP3216C_Init();
     icm20608_init();
     lcd_device_info.foreColor = 0x00FF0000;

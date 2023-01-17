@@ -6055,39 +6055,39 @@ Disassembly of section .text.startup:
 8780594c:	e24dd00c 	sub	sp, sp, #12, 0
 87805950:	e3480780 	movt	r0, #34688	; 0x8780
 87805954:	ebfff6c5 	bl	87803470 <printf>
-87805958:	ebffeb86 	bl	87800778 <Init_Interrupt>
-8780595c:	ebffea1a 	bl	878001cc <Clk_Freq_Init>
-87805960:	ebffea0e 	bl	878001a0 <Clk_Init>
-87805964:	ebffedaf 	bl	87801028 <UART1_Init>
-87805968:	ebffeaa0 	bl	878003f0 <Led_Init>
-8780596c:	ebffeb48 	bl	87800694 <Beep_Init>
-87805970:	ebfff62c 	bl	87803228 <Delay_Init>
-87805974:	ebffef1c 	bl	878015ec <LCD_Init>
-87805978:	ebfff1f9 	bl	87802164 <RTC_Init>
-8780597c:	ee113f50 	mrc	15, 0, r3, cr1, cr0, {2}
-87805980:	e3c33103 	bic	r3, r3, #-1073741824	; 0xc0000000
-87805984:	e3c3360f 	bic	r3, r3, #15728640	; 0xf00000
-87805988:	e383360f 	orr	r3, r3, #15728640	; 0xf00000
-8780598c:	ee013f50 	mcr	15, 0, r3, cr1, cr0, {2}
-87805990:	eef83a10 	vmrs	r3, fpexc
-87805994:	e3833101 	orr	r3, r3, #1073741824	; 0x40000000
-87805998:	eee83a10 	vmsr	fpexc, r3
-8780599c:	ebfff602 	bl	878031ac <icm20608_init>
-878059a0:	e3a01032 	mov	r1, #50, 0	; 0x32
-878059a4:	e30bc138 	movw	ip, #45368	; 0xb138
-878059a8:	e348c780 	movt	ip, #34688	; 0x8780
-878059ac:	e3a04018 	mov	r4, #24, 0
+87805958:	ee113f50 	mrc	15, 0, r3, cr1, cr0, {2}
+8780595c:	e3c33103 	bic	r3, r3, #-1073741824	; 0xc0000000
+87805960:	e3c3360f 	bic	r3, r3, #15728640	; 0xf00000
+87805964:	e383360f 	orr	r3, r3, #15728640	; 0xf00000
+87805968:	ee013f50 	mcr	15, 0, r3, cr1, cr0, {2}
+8780596c:	eef83a10 	vmrs	r3, fpexc
+87805970:	e3833101 	orr	r3, r3, #1073741824	; 0x40000000
+87805974:	eee83a10 	vmsr	fpexc, r3
+87805978:	ebffeb7e 	bl	87800778 <Init_Interrupt>
+8780597c:	e3a04018 	mov	r4, #24, 0
+87805980:	ebffea11 	bl	878001cc <Clk_Freq_Init>
+87805984:	ebffea05 	bl	878001a0 <Clk_Init>
+87805988:	ebffeda6 	bl	87801028 <UART1_Init>
+8780598c:	ebffea97 	bl	878003f0 <Led_Init>
+87805990:	ebffeb3f 	bl	87800694 <Beep_Init>
+87805994:	ebfff623 	bl	87803228 <Delay_Init>
+87805998:	ebffef13 	bl	878015ec <LCD_Init>
+8780599c:	ebfff1f0 	bl	87802164 <RTC_Init>
+878059a0:	ebfff601 	bl	878031ac <icm20608_init>
+878059a4:	e30b2138 	movw	r2, #45368	; 0xb138
+878059a8:	e3482780 	movt	r2, #34688	; 0x8780
+878059ac:	e3a01032 	mov	r1, #50, 0	; 0x32
 878059b0:	e3a03020 	mov	r3, #32, 0
-878059b4:	e1a00001 	mov	r0, r1
+878059b4:	e3a0c8ff 	mov	ip, #16711680	; 0xff0000
 878059b8:	e58d3000 	str	r3, [sp]
-878059bc:	e30a222c 	movw	r2, #41516	; 0xa22c
-878059c0:	e3482780 	movt	r2, #34688	; 0x8780
-878059c4:	e58d2004 	str	r2, [sp, #4]
-878059c8:	e3a02f41 	mov	r2, #260	; 0x104
-878059cc:	e3a0e8ff 	mov	lr, #16711680	; 0xff0000
-878059d0:	e58ce018 	str	lr, [ip, #24]
-878059d4:	e3e0e4ff 	mvn	lr, #-16777216	; 0xff000000
-878059d8:	e58ce01c 	str	lr, [ip, #28]
+878059bc:	e30a022c 	movw	r0, #41516	; 0xa22c
+878059c0:	e3480780 	movt	r0, #34688	; 0x8780
+878059c4:	e58d0004 	str	r0, [sp, #4]
+878059c8:	e1a00001 	mov	r0, r1
+878059cc:	e582c018 	str	ip, [r2, #24]
+878059d0:	e3e0c4ff 	mvn	ip, #-16777216	; 0xff000000
+878059d4:	e582c01c 	str	ip, [r2, #28]
+878059d8:	e3a02f41 	mov	r2, #260	; 0x104
 878059dc:	ebfff11c 	bl	87801e54 <lcd_show_string>
 878059e0:	e1a03004 	mov	r3, r4
 878059e4:	e3a0105a 	mov	r1, #90, 0	; 0x5a
