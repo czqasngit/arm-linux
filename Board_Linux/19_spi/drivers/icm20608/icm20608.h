@@ -75,10 +75,30 @@
 #define	ICM20_ZA_OFFSET_H			0x7D
 #define	ICM20_ZA_OFFSET_L 			0x7E
 
+typedef struct _icm20608_data {
+    signed int gyro_x_adc;		/* 陀螺仪X轴原始值 			*/
+	signed int gyro_y_adc;		/* 陀螺仪Y轴原始值 			*/
+	signed int gyro_z_adc;		/* 陀螺仪Z轴原始值 			*/
+	signed int accel_x_adc;		/* 加速度计X轴原始值 			*/
+	signed int accel_y_adc;		/* 加速度计Y轴原始值 			*/
+	signed int accel_z_adc;		/* 加速度计Z轴原始值 			*/
+	signed int temp_adc;		/* 温度原始值 				*/
+
+	/* 下面是计算得到的实际值，扩大100倍 */
+	signed int gyro_x_act;		/* 陀螺仪X轴实际值 			*/
+	signed int gyro_y_act;		/* 陀螺仪Y轴实际值 			*/
+	signed int gyro_z_act;		/* 陀螺仪Z轴实际值 			*/
+	signed int accel_x_act;		/* 加速度计X轴实际值 			*/
+	signed int accel_y_act;		/* 加速度计Y轴实际值 			*/
+	signed int accel_z_act;		/* 加速度计Z轴实际值 			*/
+	signed int temp_act;		/* 温度实际值 				*/
+} icm20608;
+
 void icm20608_iomux_init();
 void icm20608_init();
 u8 icm20608_read(u8 reg);
 void icm20608_write(u8 reg, u8 data);
 void icm20608_reg_init();
+icm20608 icm20608_readdata();
 void icm20608_test();
 #endif

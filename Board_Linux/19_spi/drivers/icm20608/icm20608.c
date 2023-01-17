@@ -53,6 +53,12 @@ void icm20608_write(u8 reg, u8 data) {
 }
 
 void icm20608_reg_init() {
+
+	icm20608_write(ICM20_PWR_MGMT_1, 0x80);		/* 复位，复位后为0x40,睡眠模式 			*/
+	HightPrecisionDelayMS(50);
+	icm20608_write(ICM20_PWR_MGMT_1, 0x01);		/* 关闭睡眠，自动选择时钟 					*/
+	HightPrecisionDelayMS(50);
+
     icm20608_write(ICM20_SMPLRT_DIV, 0x00); 	/* 输出速率是内部采样率					*/
 	icm20608_write(ICM20_GYRO_CONFIG, 0x18); 	/* 陀螺仪±2000dps量程 				*/
 	icm20608_write(ICM20_ACCEL_CONFIG, 0x18); 	/* 加速度计±16G量程 					*/
@@ -61,6 +67,25 @@ void icm20608_reg_init() {
 	icm20608_write(ICM20_PWR_MGMT_2, 0x00); 	/* 打开加速度计和陀螺仪所有轴 				*/
 	icm20608_write(ICM20_LP_MODE_CFG, 0x00); 	/* 关闭低功耗 						*/
 	icm20608_write(ICM20_FIFO_EN, 0x00);		/* 关闭FIFO						*/
+}
+
+icm20608 icm20608_readdata() {
+    ICM_CS_SELECTED(0);
+    u8 data[14];
+    for(int i = 0; i < 14; i++) {
+        spi_write(ECSPI3, ICM20_ACCEL_XOUT_H + i);
+        data[i] = spi_read(ECSPI3);
+    }
+    ICM_CS_SELECTED(1);
+    icm20608 icm20608_dev;
+    icm20608_dev.accel_x_adc = (signed short)((data[0] << 8) | data[1]); 
+	icm20608_dev.accel_y_adc = (signed short)((data[2] << 8) | data[3]); 
+	icm20608_dev.accel_z_adc = (signed short)((data[4] << 8) | data[5]); 
+	icm20608_dev.temp_adc    = (signed short)((data[6] << 8) | data[7]); 
+	icm20608_dev.gyro_x_adc  = (signed short)((data[8] << 8) | data[9]); 
+	icm20608_dev.gyro_y_adc  = (signed short)((data[10] << 8) | data[11]);
+	icm20608_dev.gyro_z_adc  = (signed short)((data[12] << 8) | data[13]);
+    return icm20608_dev;
 }
 
 void icm20608_test() {
