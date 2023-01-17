@@ -1,0 +1,28 @@
+{
+  "configurations": [{
+        "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/*/**", 
+                "${workspaceFolder}/common/*", 
+                "${workspaceFolder}/libs/delay/*", 
+                "${workspaceFolder}/libs/stdio/include/*", 
+                "${workspaceFolder}/drivers/beep/*", 
+                "${workspaceFolder}/drivers/clk/*", 
+                "${workspaceFolder}/drivers/gpio/*", 
+                "${workspaceFolder}/drivers/interrupt/*", 
+                "${workspaceFolder}/drivers/key0/*", 
+                "${workspaceFolder}/drivers/epit/*", 
+                "${workspaceFolder}/drivers/led/*", 
+                "${workspaceFolder}/drivers/uart/*",
+                "${workspaceFolder}/drivers/lcd/*", 
+                "${workspaceFolder}/drivers/rtc/*", 
+                "${workspaceFolder}/drivers/i2c/*", 
+                "${workspaceFolder}/drivers/ap3216c/*", 
+                "${workspaceFolder}/drivers/spi/*", 
+                "${workspaceFolder}/drivers/icm20608/*", 
+                "${workspaceFolder}/src/*"
+        ],
+        "configurationProvider": "ms-vscode.makefile-tools"
+    }],
+  "version": 4
+}
