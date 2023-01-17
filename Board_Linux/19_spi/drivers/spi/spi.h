@@ -9,5 +9,5 @@
 void spi_init(ECSPI_Type *base);
 unsigned char spi_read(ECSPI_Type *base);
 void spi_write(ECSPI_Type *base, unsigned char value);
-
+unsigned char spich0_readwrite_byte(ECSPI_Type *base, unsigned char txdata);
 #endif
