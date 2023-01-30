@@ -30,11 +30,28 @@ void spi_init(ECSPI_Type *base) {
 unsigned char spi_read(ECSPI_Type *base) {
     base->CONREG &= ~(3 << 18); // 选择ss0
     while(((base->STATREG >> 3) & 0x1) == 0);
-    unsigned char value = base->RXDATA & 0xF; // 取低8位
+    uint32_t value = base->RXDATA; // 取低8位
     return value;
 }
 void spi_write(ECSPI_Type *base, unsigned char value) {
     base->CONREG &= ~(3 << 18); // 选择ss0
     while(((base->STATREG >> 0) & 0x1) == 0); // 0: FIFO数据不为空, 1: FIFO数据为空，此时可以发送数据
     base->TXDATA = (uint32_t)value;
+}
+
+unsigned char spich0_readwrite_byte(ECSPI_Type *base, unsigned char txdata)
+{ 
+	uint32_t  spirxdata = 0;
+	uint32_t  spitxdata = txdata;
+
+    /* 选择通道0 */
+	base->CONREG &= ~(3 << 18);
+	base->CONREG |= (0 << 18);
+
+  	while((base->STATREG & (1 << 0)) == 0){} /* 等待发送FIFO为空 */
+		base->TXDATA = spitxdata;
+	
+	while((base->STATREG & (1 << 3)) == 0){} /* 等待接收FIFO有数据 */
+		spirxdata = base->RXDATA;
+	return spirxdata;
 }

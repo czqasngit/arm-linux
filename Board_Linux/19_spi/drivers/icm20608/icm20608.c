@@ -6,25 +6,30 @@
 #include "delay.h"
 #include "gpio.h"
 
-void icm20608_init() {
+char icm20608_init() {
     icm20608_iomux_init();
     spi_init(ECSPI3);
-    icm20608_test();
+	icm20608_write(ICM20_PWR_MGMT_1, 0x80);		/* 复位，复位后为0x40,睡眠模式 			*/
+	HightPrecisionDelayMS(50);
+	icm20608_write(ICM20_PWR_MGMT_1, 0x01);		/* 关闭睡眠，自动选择时钟 					*/
+	HightPrecisionDelayMS(50);
+	icm20608_test();
     // 初始化icm20608的传感器相关参数
     icm20608_reg_init();
+	return 0;
 }
 
 // 引脚复用
 void icm20608_iomux_init() {
     // 引脚复用 CLK, MOSI, MISO
     IOMUXC_SetPinMux(IOMUXC_UART2_RX_DATA_ECSPI3_SCLK, 0);
-    IOMUXC_SetPinConfig(IOMUXC_UART2_RX_DATA_ECSPI3_SCLK, 0x10B0);
+    IOMUXC_SetPinConfig(IOMUXC_UART2_RX_DATA_ECSPI3_SCLK, 0x10B1);
 
     IOMUXC_SetPinMux(IOMUXC_UART2_CTS_B_ECSPI3_MOSI, 0);
-    IOMUXC_SetPinConfig(IOMUXC_UART2_CTS_B_ECSPI3_MOSI, 0x10B0);
+    IOMUXC_SetPinConfig(IOMUXC_UART2_CTS_B_ECSPI3_MOSI, 0x10B1);
 
     IOMUXC_SetPinMux(IOMUXC_UART2_RTS_B_ECSPI3_MISO, 0);
-    IOMUXC_SetPinConfig(IOMUXC_UART2_RTS_B_ECSPI3_MISO, 0x10B0);
+    IOMUXC_SetPinConfig(IOMUXC_UART2_RTS_B_ECSPI3_MISO, 0x10B1);
 
     // 片选引用,当前底板将SPI外设的CS引脚接到了GPIO1_IO20上(ss0接到GPIO1_IO20)
     IOMUXC_SetPinMux(IOMUXC_UART2_TX_DATA_GPIO1_IO20, 0);
@@ -33,32 +38,49 @@ void icm20608_iomux_init() {
 }
 
 u8 icm20608_read(u8 reg) {
-    // 输出0，表示当前片选拉低，选中当前SPI外设
-    ICM_CS_SELECTED(0);
-    reg |= (1 << 7); // bit7 0: 写数据， 1: 读数据
-    spi_write(ECSPI3, reg);
-    // spi_write(ECSPI3, 0xF);// icm20608 需要至少16个时钟周期才可以完成一次读写,这里写一次无效数据,
-    u8 value = spi_read(ECSPI3);
-    // 拉高,停止访问
-    ICM_CS_SELECTED(1); 
-    return value; 
+    // // 输出0，表示当前片选拉低，选中当前SPI外设
+    // ICM_CS_SELECTED(0);
+    // reg |= (1 << 7); // bit7 0: 写数据， 1: 读数据
+    // spi_write(ECSPI3, reg);
+    // u8 value = spi_read(ECSPI3);
+    // // 拉高,停止访问
+    // ICM_CS_SELECTED(1); 
+    // return value; 
+
+	unsigned char reg_val;	   	
+
+	/* ICM20608在使用SPI接口的时候寄存器地址
+	 * 只有低7位有效,寄存器地址最高位是读/写标志位
+	 * 读的时候要为1，写的时候要为0。
+	 */
+	reg |= (1 << 7);	
+	
+   	ICM_CS_SELECTED(0);               					/* 使能SPI传输	 		*/
+  	spich0_readwrite_byte(ECSPI3, reg);     		/* 发送寄存器地址  		*/ 
+  	reg_val = spich0_readwrite_byte(ECSPI3, 0XFF);	/* 读取寄存器的值 			*/
+ 	ICM_CS_SELECTED(1);                				/* 禁止SPI传输 			*/
+  	return(reg_val);   
 }
 
 void icm20608_write(u8 reg, u8 data) {
-    ICM_CS_SELECTED(0);
-    reg &= ~(1 << 7);
-    spi_write(ECSPI3, reg);
-    spi_write(ECSPI3, data);
-    ICM_CS_SELECTED(1);
+    // ICM_CS_SELECTED(0);
+    // reg &= ~(1 << 7);
+    // spi_write(ECSPI3, reg);
+    // spi_write(ECSPI3, data);
+    // ICM_CS_SELECTED(1);
+	/* ICM20608在使用SPI接口的时候寄存器地址
+	 * 只有低7位有效,寄存器地址最高位是读/写标志位
+	 * 读的时候要为1，写的时候要为0。
+	 */
+	reg &= ~(1 << 7);	
+	
+	ICM_CS_SELECTED(0);						/* 使能SPI传输			*/
+	spich0_readwrite_byte(ECSPI3, reg); 	/* 发送寄存器地址		*/ 
+	spich0_readwrite_byte(ECSPI3, data);	/* 发送要写入的值			*/
+	ICM_CS_SELECTED(1);	
 }
 
 void icm20608_reg_init() {
-
-	icm20608_write(ICM20_PWR_MGMT_1, 0x80);		/* 复位，复位后为0x40,睡眠模式 			*/
-	HightPrecisionDelayMS(50);
-	icm20608_write(ICM20_PWR_MGMT_1, 0x01);		/* 关闭睡眠，自动选择时钟 					*/
-	HightPrecisionDelayMS(50);
-
     icm20608_write(ICM20_SMPLRT_DIV, 0x00); 	/* 输出速率是内部采样率					*/
 	icm20608_write(ICM20_GYRO_CONFIG, 0x18); 	/* 陀螺仪±2000dps量程 				*/
 	icm20608_write(ICM20_ACCEL_CONFIG, 0x18); 	/* 加速度计±16G量程 					*/
@@ -124,13 +146,33 @@ unsigned short icm20608_accel_scaleget(void)
 	return accelscale;
 }
 
+/*
+ * @description	: 读取ICM20608连续多个寄存器
+ * @param - reg	: 要读取的寄存器地址
+ * @return 		: 读取到的寄存器值
+ */
+void icm20608_read_len(unsigned char reg, unsigned char *buf, unsigned char len)
+{  
+	unsigned char i;
+	
+	/* ICM20608在使用SPI接口的时候寄存器地址，只有低7位有效,
+	 * 寄存器地址最高位是读/写标志位读的时候要为1，写的时候要为0。
+	 */
+	reg |= 0x80; 
+		
+   	ICM20608_CSN(0);               				/* 使能SPI传输	 		*/
+  	spich0_readwrite_byte(ECSPI3, reg);			/* 发送寄存器地址  		*/   	   
+ 	for(i = 0; i < len; i++)					/* 顺序读取寄存器的值 			*/
+ 	{
+		buf[i] = spich0_readwrite_byte(ECSPI3, 0XFF);	
+	}
+ 	ICM20608_CSN(1);                			/* 禁止SPI传输 			*/
+}
+
 icm20608 icm20608_readdata() {
     ICM_CS_SELECTED(0);
     u8 data[14];
-    for(int i = 0; i < 14; i++) {
-        spi_write(ECSPI3, ICM20_ACCEL_XOUT_H + i);
-        data[i] = spi_read(ECSPI3);
-    }
+   	icm20608_read_len(ICM20_ACCEL_XOUT_H, data, 14);
     u16 gyroscale = icm20608_gyro_scaleget();
     u16 accescale = icm20608_accel_scaleget();
     ICM_CS_SELECTED(1);
