@@ -6,9 +6,9 @@
 #define AP3216C_SYSTEM_CONFIGURATION_REGISTER   0x00
 #define AP3216C_INPUT_STATUS                    0x01
 #define AP3216C_INT_MANAGER                     0x02
-#define AP3216C_IR_DATA_LOW                     0X0A
-#define AP3216C_IR_DATA_HIGH                    0X0B
-#define AP3216C_ALS_DATA_LOW                    0X0C
+#define AP3216C_IR_DATA_LOW                     0x0A
+#define AP3216C_IR_DATA_HIGH                    0x0B
+#define AP3216C_ALS_DATA_LOW                    0x0C
 #define AP3216C_ALS_DATA_HIGH                   0X0D
 #define AP3216C_PS_DATA_LOW                     0X0E
 #define AP3216C_PS_DATA_HIGH                    0X0F

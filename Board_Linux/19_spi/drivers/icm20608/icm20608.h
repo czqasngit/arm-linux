@@ -3,7 +3,9 @@
 
 #include "imx6ul.h"
 
-#define ICM_CS_SELECTED(N) GPIO_SetValue(GPIO1, 20, N);
+#define ICM_CS_SELECTED(N) (N ? GPIO_SetValue(GPIO1, 20, 1) : GPIO_SetValue(GPIO1, 20, 0));
+#define ICM20608_CSN(n)    (n ? GPIO_SetValue(GPIO1, 20, 1) : GPIO_SetValue(GPIO1, 20, 0))   /* SPI片选信号	 */
+
 
 #define ICM20608_G_ID               0xAF
 #define ICM20608_D_ID               0xAE
@@ -95,7 +97,7 @@ typedef struct _icm20608_data {
 } icm20608;
 
 void icm20608_iomux_init();
-void icm20608_init();
+char icm20608_init();
 u8 icm20608_read(u8 reg);
 void icm20608_write(u8 reg, u8 data);
 void icm20608_reg_init();
