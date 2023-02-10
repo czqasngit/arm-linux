@@ -247,7 +247,7 @@ CROSS_COMPILE ?=
 endif
 
 ARCH ?= arm
-CROSS_COMPILE ?= arm-unknown-linux-gnueabihf-
+CROSS_COMPILE ?= arm-none-linux-gnueabihf-
 
 KCONFIG_CONFIG	?= .config
 export KCONFIG_CONFIG
@@ -1616,6 +1616,3 @@ FORCE:
 # Declare the contents of the .PHONY variable as phony.  We keep that
 # information in a variable so we can use it in if_changed and friends.
 .PHONY: $(PHONY)
-
-CONFIG_MX6:
-	make mx6ull_14x14_ddr512_emmc_defconfig
