@@ -1,3 +1,3 @@
 make distclean
-make mx6ull_14x14_evk_emmc_defconfig
-make 
+make mx6ull_yxb_emmc_defconfig
+make -j8
