@@ -113,7 +113,7 @@
 #if defined(CONFIG_SYS_BOOT_NAND)
 #define CONFIG_EXTRA_ENV_SETTINGS \
 	CONFIG_MFG_ENV_SETTINGS \
-	"panel=TFT43AB\0" \
+	"panel=TFT4384\0" \
 	"fdt_addr=0x83000000\0" \
 	"fdt_high=0xffffffff\0"	  \
 	"console=ttymxc0\0" \
